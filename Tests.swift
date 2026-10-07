@@ -47,7 +47,7 @@ func runDomainTests() {
         }
         return tracks.count==SoundPack.allCases.count*ListeningMode.availableSounds.count
     }
-    check("声音包默认空客，全部选择可恢复且损坏值安全回退") {
+    check("声音包默认A320，全部选择可恢复且损坏值安全回退") {
         let suite="radio-packs-test-"+UUID().uuidString
         guard let prefs=UserDefaults(suiteName:suite) else{return false};defer{prefs.removePersistentDomain(forName:suite)}
         guard SoundPack.load(from:prefs) == .airbus else{return false}

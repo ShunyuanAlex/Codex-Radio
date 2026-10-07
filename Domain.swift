@@ -157,17 +157,17 @@ enum SoundPack:String,CaseIterable,Identifiable {
     var id:String{rawValue}
     static let preferenceKey="soundPackV1"
     var title:String {
-        switch self {case .boeing:return "波音";case .airbus:return "空客";case .j11a:return "歼-11A"}
+        switch self {case .boeing:return "B777";case .airbus:return "A320";case .j11a:return "歼-11A"}
     }
     var displayCode:String {
-        switch self {case .boeing:return "BOEING";case .airbus:return "AIRBUS";case .j11a:return "J-11A"}
+        switch self {case .boeing:return "B777";case .airbus:return "A320";case .j11a:return "J-11A"}
     }
     var vehicle:String {
-        switch self {case .boeing:return "波音 / 777";case .airbus:return "空客 / A320";case .j11a:return "中国 / 歼-11A"}
+        switch self {case .boeing:return "波音 / B777";case .airbus:return "空客 / A320";case .j11a:return "中国 / 歼-11A"}
     }
     var subtitle:String {
         switch self {
-        case .boeing:return "777 · 清脆钟声与蜂鸣提醒"
+        case .boeing:return "B777 · 清脆钟声与蜂鸣提醒"
         case .airbus:return "A320 · 高低钟声与三连警示"
         case .j11a:return "歼-11A · 座舱按键与电子警示"
         }

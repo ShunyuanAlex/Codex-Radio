@@ -110,7 +110,7 @@ struct RadioSettings:View {
                 Group {
                     switch store.settingsTab{case "sounds":sounds;case "callsigns":callsigns;case "setup":setup;default:general}
                 }.id(store.settingsTab).frame(maxWidth:.infinity,maxHeight:.infinity,alignment:.topLeading)
-                HStack{Circle().fill(FlightDeck.green).frame(width:4,height:4);Text("设置即时保存在本机").font(.system(size:10));Spacer();Text("CODEX RADIO  0.11.2").font(.system(size:9,design:.monospaced)).tracking(1)}.foregroundColor(FlightDeck.muted)
+                HStack{Circle().fill(FlightDeck.green).frame(width:4,height:4);Text("设置即时保存在本机").font(.system(size:10));Spacer();Text("CODEX RADIO  0.11.3").font(.system(size:9,design:.monospaced)).tracking(1)}.foregroundColor(FlightDeck.muted)
             }.padding(24).frame(maxWidth:.infinity,maxHeight:.infinity)
         }.frame(minWidth:860,minHeight:610).background(FlightDeck.background).foregroundColor(FlightDeck.text).preferredColorScheme(.dark).buttonStyle(FlightButtonStyle())
     }

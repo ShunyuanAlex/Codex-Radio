@@ -39,8 +39,8 @@ cat > "$wing_app/Contents/Info.plist" <<'PLIST'
 <key>CFBundleIdentifier</key><string>local.wingradio.menubar</string>
 <key>CFBundleExecutable</key><string>CodexRadio</string>
 <key>CFBundlePackageType</key><string>APPL</string>
-<key>CFBundleShortVersionString</key><string>0.11.2</string>
-<key>CFBundleVersion</key><string>18</string>
+<key>CFBundleShortVersionString</key><string>0.11.3</string>
+<key>CFBundleVersion</key><string>19</string>
 <key>LSUIElement</key><true/>
 <key>LSMinimumSystemVersion</key><string>13.0</string>
 <key>NSHighResolutionCapable</key><true/>
@@ -56,5 +56,5 @@ python3 HookReview/test_native_collector.py "$wing_app/Contents/Helpers/CodexRad
 python3 package.py "$wing_app"
 print -r -- "$wing_app" > build/staged-app-path.txt
 print -r -- "Verified app: $wing_app"
-print -r -- "Release archive: $PWD/build/Codex Radio-0.11.2.zip"
+print -r -- "Release archive: $PWD/build/Codex Radio-0.11.3.zip"
 zsh make-dmg.sh "$wing_app"

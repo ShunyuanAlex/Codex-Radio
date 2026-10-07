@@ -1,4 +1,4 @@
-Codex Radio 0.11.2 · 本地 Codex 菜单栏工具
+Codex Radio 0.11.3 · 本地 Codex 菜单栏工具
 Apple Silicon 与 Intel 通用二进制 / macOS 13+。Intel 已交叉编译，尚未完成 Intel 实机验收。
 
 使用
@@ -33,16 +33,16 @@ CC BY-SA 3.0：https://creativecommons.org/licenses/by-sa/3.0/
 切点、时长和 SHA256 见 HookReview/voice-catalog.json。已验证离线解码和波形；不代表实体听音验收。
 
 航空提示音：两款内置声音包
-在设置 → 声音与模式 → 飞机声音包，选择“波音”或“空客”。首次使用空客；选择立即保存，重启继续使用。切换会停止当前音轨、清空待播队列，下一条事件使用新包。个人导入音源仍优先，点该行“还原”恢复当前包。
+在设置 → 声音与模式 → 声音包，选择“B777”“A320”或“歼-11A”。首次使用 A320；选择立即保存，重启继续使用。切换会停止当前音轨、清空待播队列，下一条事件使用新包。个人导入音源仍优先，点该行“还原”恢复当前包。
 八类固定标识：发送/插入＝短按键；处理中＝单声短铃；工具返回＝双按键回执；压缩上下文＝高低收束音；本轮收尾＝完整双钟声；等待确认＝间隔双提醒；已停止＝断开提示（空客单声电子提示、波音保留原断开声）；工具报错＝连续三连告警。
 每款均包含8段独立PCM音效。保持两款的类别含义一致，同时保留机型素材的音色差异。仅单次提示，不循环警报。
 
-空客：FlightGear A320-family，FGMEMBERS/A320-family
+A320：FlightGear A320-family，FGMEMBERS/A320-family
 https://github.com/FGMEMBERS/A320-family/tree/00038142d3443d7f4aec9410520df608e8ae7ba8
 Sounds/click.wav、flaps.wav、cabinalert.wav、stall.wav；FL2070/320cabinalert.wav、320gear.wav、320apoff.wav。
 FL2070 soundpack；项目作者见 Assets/SoundSources/airbus/README.md，GPL-2.0 许可见同目录 COPYING。
 
-波音：FlightGear Boeing-777-Flightgear，franck-vmd / Franck VMD 及项目贡献者
+B777：FlightGear Boeing-777-Flightgear，franck-vmd / Franck VMD 及项目贡献者
 https://github.com/franck-vmd/Boeing-777-Flightgear/tree/42b53cbd1abff5a2cbc868c6576c79c343405b3d
 777-VMD/Sounds/click7.wav、Flaps.wav、cabinalert.wav、caution-sound.wav、autopilot-disengage.wav、config-warning.wav。
 完整作者名单及GPL-2.0许可见 Assets/SoundSources/boeing/AUTHORS 和 LICENSE。
@@ -74,7 +74,7 @@ Radio 不申请辅助功能、屏幕录制、麦克风或完整磁盘访问权�
 早期安装可能位于 ~/Applications/Codex Radio.app。升级时退出并替换原位置，避免保留两份运行中的应用。
 
 构建与验证
-zsh build.sh，产物 build/Codex Radio-0.11.2.zip 和 build/Codex Radio-0.11.2.dmg；包含源码、音源、许可证和无声测试结果。
+zsh build.sh，产物 build/Codex Radio-0.11.3.zip 和 build/Codex Radio-0.11.3.dmg；包含源码、音源、许可证和无声测试结果。
 应用及接入程序均包含 arm64 / x86_64，最低macOS13。签名为本机 ad-hoc，未公证；没有可用的 Developer ID Application 发行签名身份。
 在临时空用户目录验证首次安装、路径带中文／空格／单引号、原配置保留、重复安装、损坏配置与并发编辑保护；原生收集器以合成事件验证隐私、状态与文件权限。测试不创建播放器、不修改系统音频设备、不自动授权真实 Hooks。
 本机编译、隔离测试与DMG校验不代表另一台实体Mac首次启动或Intel运行已完成验收。
@@ -113,3 +113,6 @@ PreCompact（手动或自动）开始压缩时播报一次“项目呼号＋数�
 新增歼-11A 声音包，来自 FlightGear J-11A / Su-27SK 共用模拟器素材，不声称是真实歼-11座舱录音。作者包括 Yanes Bechir、FGUK team、Sidi Liang 及上游贡献者。
 八类声音：座舱按键、单声短铃、双短电子音、高低收束、上行双铃、间隔低频双提醒、短降调、三连座舱警示。处理中保持单声短铃，提示音继续匹配真人呼号有效电平。
 波音／空客／歼-11A 可在菜单栏与设置中选择。音频按上游 README 的 GPL-3.0-or-later 声明分发，上游附带的 GPL-2.0 文本一并保留；作者、许可和改动见 THIRD_PARTY_NOTICES.md 和 Assets/SoundSources/j11a。118 项无声检查通过；主观听感需用户试听。
+
+0.11.3 更新
+声音包统一使用机型名称：B777、A320、歼-11A。菜单、设置卡片、当前声音包显示和试听标签同步更新。音源、音量及已保存的选择保持。

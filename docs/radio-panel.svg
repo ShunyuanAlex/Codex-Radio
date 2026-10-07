@@ -5,7 +5,7 @@
 <g fill="none" stroke="#6dced9" stroke-width="3"><path d="M67 77v25m-9-35a19 19 0 0 0 0 25m18-25a19 19 0 0 1 0 25m-26-34a31 31 0 0 0 0 43m34-43a31 31 0 0 1 0 43"/><circle cx="67" cy="79" r="3"/></g>
 <g font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif"><text x="112" y="79" fill="#e7ebe5" font-size="30" font-weight="600">Codex Radio</text><text x="112" y="107" fill="#97a9ad" font-size="12" letter-spacing="3">COMMUNICATION PANEL</text>
 <text x="58" y="175" fill="#e7ebe5" font-size="23">听见每一次进展。</text><text x="58" y="214" fill="#97a9ad" font-size="15">真人呼号 · 航空提示音 · 本地 Codex 状态</text>
-<text x="58" y="308" fill="#6dced9" font-size="14" letter-spacing="2">BOEING 777 / AIRBUS A320</text><text x="58" y="344" fill="#97a9ad" font-size="13">macOS 13+  ·  Apple Silicon / Intel</text>
+<text x="58" y="308" fill="#6dced9" font-size="14" letter-spacing="2">B777 / A320 / J-11A</text><text x="58" y="344" fill="#97a9ad" font-size="13">macOS 13+  ·  Apple Silicon / Intel</text>
 <rect x="576" y="38" width="530" height="352" rx="10" fill="url(#panel)" stroke="#445157"/>
 <rect x="598" y="60" width="486" height="173" rx="6" fill="#081115" stroke="#365b63"/>
 <circle cx="620" cy="86" r="3" fill="#88daa3"/><text x="633" y="91" font-size="11" fill="#97a9ad">LOCAL LINK</text><text x="1025" y="91" fill="#97a9ad" font-size="11">STBY</text>
