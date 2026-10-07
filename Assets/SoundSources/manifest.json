@@ -1,0 +1,184 @@
+[
+  {
+    "pack": "boeing",
+    "source": "777-VMD/Sounds/click3.wav",
+    "url": "https://raw.githubusercontent.com/franck-vmd/Boeing-777-Flightgear/42b53cbd1abff5a2cbc868c6576c79c343405b3d/777-VMD/Sounds/click3.wav",
+    "sha256": "4c6393d94a467dccc9cfa1855ab483c4926ee59c84f5805f3bd89c040ad0e322",
+    "local": "boeing/click3.wav",
+    "rate": 44100,
+    "channels": 1,
+    "width": 2,
+    "seconds": 0.016
+  },
+  {
+    "pack": "boeing",
+    "source": "777-VMD/Sounds/click7.wav",
+    "url": "https://raw.githubusercontent.com/franck-vmd/Boeing-777-Flightgear/42b53cbd1abff5a2cbc868c6576c79c343405b3d/777-VMD/Sounds/click7.wav",
+    "sha256": "c9adb4a9bdc534ec9bd63d80f30c87fdcc0dbd9bab2cfb6f7cf007ec702e1cd0",
+    "local": "boeing/click7.wav",
+    "rate": 44100,
+    "channels": 1,
+    "width": 2,
+    "seconds": 0.124
+  },
+  {
+    "pack": "boeing",
+    "source": "777-VMD/Sounds/Flaps.wav",
+    "url": "https://raw.githubusercontent.com/franck-vmd/Boeing-777-Flightgear/42b53cbd1abff5a2cbc868c6576c79c343405b3d/777-VMD/Sounds/Flaps.wav",
+    "sha256": "7ca7350fbfc7db9f5480383c093b0bfc46dad9f73bb67ad9e06baa649b623676",
+    "local": "boeing/Flaps.wav",
+    "rate": 8000,
+    "channels": 1,
+    "width": 2,
+    "seconds": 2.576
+  },
+  {
+    "pack": "boeing",
+    "source": "777-VMD/Sounds/cabinalert.wav",
+    "url": "https://raw.githubusercontent.com/franck-vmd/Boeing-777-Flightgear/42b53cbd1abff5a2cbc868c6576c79c343405b3d/777-VMD/Sounds/cabinalert.wav",
+    "sha256": "6b25ab68959722fd930e9febb47021eee073ad3d477850b316cc3e754e13858a",
+    "local": "boeing/cabinalert.wav",
+    "rate": 22050,
+    "channels": 1,
+    "width": 2,
+    "seconds": 0.998
+  },
+  {
+    "pack": "boeing",
+    "source": "777-VMD/Sounds/caution-sound.wav",
+    "url": "https://raw.githubusercontent.com/franck-vmd/Boeing-777-Flightgear/42b53cbd1abff5a2cbc868c6576c79c343405b3d/777-VMD/Sounds/caution-sound.wav",
+    "sha256": "6300ea2434a741df051e8bd3745dc1b51619755ae517b99bb34e51735fda49d4",
+    "local": "boeing/caution-sound.wav",
+    "rate": 44100,
+    "channels": 1,
+    "width": 2,
+    "seconds": 0.773
+  },
+  {
+    "pack": "boeing",
+    "source": "777-VMD/Sounds/autopilot-disengage.wav",
+    "url": "https://raw.githubusercontent.com/franck-vmd/Boeing-777-Flightgear/42b53cbd1abff5a2cbc868c6576c79c343405b3d/777-VMD/Sounds/autopilot-disengage.wav",
+    "sha256": "bf250c7a11945c874e753584376a0c725a46c10992f72a4bb74efeff8117ec28",
+    "local": "boeing/autopilot-disengage.wav",
+    "rate": 22050,
+    "channels": 1,
+    "width": 2,
+    "seconds": 1.748
+  },
+  {
+    "pack": "boeing",
+    "source": "777-VMD/Sounds/config-warning.wav",
+    "url": "https://raw.githubusercontent.com/franck-vmd/Boeing-777-Flightgear/42b53cbd1abff5a2cbc868c6576c79c343405b3d/777-VMD/Sounds/config-warning.wav",
+    "sha256": "f3717ce4162b27dc619cbbae5d506803d59e2a042181bcbdd61bf62d364ddf80",
+    "local": "boeing/config-warning.wav",
+    "rate": 44100,
+    "channels": 1,
+    "width": 2,
+    "seconds": 1.361
+  },
+  {
+    "pack": "boeing",
+    "source": "LICENSE",
+    "url": "https://raw.githubusercontent.com/franck-vmd/Boeing-777-Flightgear/42b53cbd1abff5a2cbc868c6576c79c343405b3d/LICENSE",
+    "sha256": "8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643",
+    "local": "boeing/LICENSE"
+  },
+  {
+    "pack": "boeing",
+    "source": "777-VMD/AUTHORS",
+    "url": "https://raw.githubusercontent.com/franck-vmd/Boeing-777-Flightgear/42b53cbd1abff5a2cbc868c6576c79c343405b3d/777-VMD/AUTHORS",
+    "sha256": "25acc682a5fdaf9acfb7b54347504efc0afc32d56ea3916470cf4598c95a6489",
+    "local": "boeing/AUTHORS"
+  },
+  {
+    "pack": "airbus",
+    "source": "Sounds/click.wav",
+    "url": "https://raw.githubusercontent.com/FGMEMBERS/A320-family/00038142d3443d7f4aec9410520df608e8ae7ba8/Sounds/click.wav",
+    "sha256": "a797a293428afe1e9999a5ffccd1ad7b9b581d427189de02caf66f389a70a31b",
+    "local": "airbus/click.wav",
+    "rate": 11025,
+    "channels": 1,
+    "width": 1,
+    "seconds": 0.052
+  },
+  {
+    "pack": "airbus",
+    "source": "Sounds/flaps.wav",
+    "url": "https://raw.githubusercontent.com/FGMEMBERS/A320-family/00038142d3443d7f4aec9410520df608e8ae7ba8/Sounds/flaps.wav",
+    "sha256": "11b8a953b1a7fd9c9b52abd2912e2f5845102121736aa302ee5fbd035e1af557",
+    "local": "airbus/flaps.wav",
+    "rate": 8000,
+    "channels": 1,
+    "width": 2,
+    "seconds": 2.576
+  },
+  {
+    "pack": "airbus",
+    "source": "Sounds/cabinalert.wav",
+    "url": "https://raw.githubusercontent.com/FGMEMBERS/A320-family/00038142d3443d7f4aec9410520df608e8ae7ba8/Sounds/cabinalert.wav",
+    "sha256": "4304b19449f3be1f8c8055a8eff5dc9630ff17242e933d950c152aabf9bdc75c",
+    "local": "airbus/cabinalert.wav",
+    "rate": 22050,
+    "channels": 1,
+    "width": 2,
+    "seconds": 1.806
+  },
+  {
+    "pack": "airbus",
+    "source": "Sounds/FL2070/320cabinalert.wav",
+    "url": "https://raw.githubusercontent.com/FGMEMBERS/A320-family/00038142d3443d7f4aec9410520df608e8ae7ba8/Sounds/FL2070/320cabinalert.wav",
+    "sha256": "b525cb7f4415b133794a2622e0c5bedde2915aa5706318b2092500c473b58580",
+    "local": "airbus/FL2070/320cabinalert.wav",
+    "rate": 22050,
+    "channels": 1,
+    "width": 2,
+    "seconds": 1.659
+  },
+  {
+    "pack": "airbus",
+    "source": "Sounds/FL2070/320gear.wav",
+    "url": "https://raw.githubusercontent.com/FGMEMBERS/A320-family/00038142d3443d7f4aec9410520df608e8ae7ba8/Sounds/FL2070/320gear.wav",
+    "sha256": "4057e0742ee8ed5128e79e3947c41ec31a85eee0793da906f82350166ed1d3f3",
+    "local": "airbus/FL2070/320gear.wav",
+    "rate": 22050,
+    "channels": 1,
+    "width": 2,
+    "seconds": 4.088
+  },
+  {
+    "pack": "airbus",
+    "source": "Sounds/FL2070/320apoff.wav",
+    "url": "https://raw.githubusercontent.com/FGMEMBERS/A320-family/00038142d3443d7f4aec9410520df608e8ae7ba8/Sounds/FL2070/320apoff.wav",
+    "sha256": "229cf15acc9f857e7b6758e80c5698a161bcf7002e389fc352d99b754de44cf0",
+    "local": "airbus/FL2070/320apoff.wav",
+    "rate": 22050,
+    "channels": 1,
+    "width": 2,
+    "seconds": 1.47
+  },
+  {
+    "pack": "airbus",
+    "source": "Sounds/stall.wav",
+    "url": "https://raw.githubusercontent.com/FGMEMBERS/A320-family/00038142d3443d7f4aec9410520df608e8ae7ba8/Sounds/stall.wav",
+    "sha256": "ee1d3198af6096ffb1343253fdbb84e19d7ec13adcdb81bf5da896afe788d0d7",
+    "local": "airbus/stall.wav",
+    "rate": 22050,
+    "channels": 1,
+    "width": 2,
+    "seconds": 1.311
+  },
+  {
+    "pack": "airbus",
+    "source": "COPYING",
+    "url": "https://raw.githubusercontent.com/FGMEMBERS/A320-family/00038142d3443d7f4aec9410520df608e8ae7ba8/COPYING",
+    "sha256": "dcc100d4161cc0b7177545ab6e47216f84857cda3843847c792a25289852dcaa",
+    "local": "airbus/COPYING"
+  },
+  {
+    "pack": "airbus",
+    "source": "README.md",
+    "url": "https://raw.githubusercontent.com/FGMEMBERS/A320-family/00038142d3443d7f4aec9410520df608e8ae7ba8/README.md",
+    "sha256": "8a90c2cb3cd3506ee870f7454bb3ec741706e0ff537e72618794cd09eeeca9be",
+    "local": "airbus/README.md"
+  }
+]

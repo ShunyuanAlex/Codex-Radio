@@ -1,0 +1,298 @@
+{
+  "status": "bundled_from_user_upload",
+  "source": "https://commons.wikimedia.org/wiki/File:NATO_Phonetic_Alphabet_reading.ogg",
+  "author": "valeatory",
+  "license": "CC BY-SA 3.0",
+  "changes": "24kHz mono PCM conversion; alphabet and trailing 0–9 clipping; peak gain; -52 dBFS 5ms RMS boundary detection with 8ms margins; Alfa source end capped at 1.18s to exclude a detached low-frequency tail; 2ms edge fades. Runtime applies 12ms linear crossfades only between adjacent voice clips. No synthesis or time stretching.",
+  "verification": "26 alphabet segments and 10 following digit segments; user explicitly confirmed digit order 0,1,2...9 on 2026-10-07. Offline decoding and waveform checks; no physical listening test by agent.",
+  "files": [
+    {
+      "callsign": "Alfa",
+      "file": "alfa.wav",
+      "source_start": 0.697,
+      "source_end": 1.158,
+      "duration": 0.461,
+      "sha256": "982d3f812d48299b46b216249ef39dd8aa9d2fe9b187a8ccbf5e4f472e9aebb8"
+    },
+    {
+      "callsign": "Bravo",
+      "file": "bravo.wav",
+      "source_start": 1.877,
+      "source_end": 2.318,
+      "duration": 0.441,
+      "sha256": "6b060394f96d7b026b95bafed9a08edc06aa396718ea064a366a5eaec0f0b9dc"
+    },
+    {
+      "callsign": "Charlie",
+      "file": "charlie.wav",
+      "source_start": 3.042,
+      "source_end": 3.483,
+      "duration": 0.441,
+      "sha256": "d6a70afc46ca09bc49340315b64ad746d91636c3ae0b0652698bed07d6139580"
+    },
+    {
+      "callsign": "Delta",
+      "file": "delta.wav",
+      "source_start": 4.212,
+      "source_end": 4.688,
+      "duration": 0.476,
+      "sha256": "553fb958994a84dd67a93a217e30da045559c8febd0e808fc26a827fc90ba21d"
+    },
+    {
+      "callsign": "Echo",
+      "file": "echo.wav",
+      "source_start": 5.462,
+      "source_end": 5.878,
+      "duration": 0.416,
+      "sha256": "b5bbe73c39d8b2cae984daccabbff3b3425634459a53efae3004eb77e9beafa0"
+    },
+    {
+      "callsign": "Foxtrot",
+      "file": "foxtrot.wav",
+      "source_start": 6.587,
+      "source_end": 7.348,
+      "duration": 0.761,
+      "sha256": "90f75e61c8f27bf59e486f44379c1f3c405ee5c7c49aa3ae0ad0bd1623cfe2d6"
+    },
+    {
+      "callsign": "Golf",
+      "file": "golf.wav",
+      "source_start": 7.927,
+      "source_end": 8.343,
+      "duration": 0.416,
+      "sha256": "c72f634fabb5d0370166a3c399e7d428d966a74e9014de72bb10c8432d58096c"
+    },
+    {
+      "callsign": "Hotel",
+      "file": "hotel.wav",
+      "source_start": 8.972,
+      "source_end": 9.503,
+      "duration": 0.531,
+      "sha256": "6399c0c889ab810fddc3ffda53b8efcf09e462fe8863960fee95fb6f2edc3277"
+    },
+    {
+      "callsign": "India",
+      "file": "india.wav",
+      "source_start": 10.252,
+      "source_end": 10.718,
+      "duration": 0.466,
+      "sha256": "5993b776d196ffd915c4ef10556e45516153d6041831b6cfa4acfcdf88c9b42b"
+    },
+    {
+      "callsign": "Juliett",
+      "file": "juliett.wav",
+      "source_start": 11.377,
+      "source_end": 11.983,
+      "duration": 0.606,
+      "sha256": "30033e39035e95d08792a135fb77a3917269efdca9e0db16465fd7631cf4573c"
+    },
+    {
+      "callsign": "Kilo",
+      "file": "kilo.wav",
+      "source_start": 12.677,
+      "source_end": 13.093,
+      "duration": 0.416,
+      "sha256": "9064767c0dd513d86c21a2daffb8882c72e54a48618d2a82f27ee4dc6c2bc238"
+    },
+    {
+      "callsign": "Lima",
+      "file": "lima.wav",
+      "source_start": 13.872,
+      "source_end": 14.323,
+      "duration": 0.451,
+      "sha256": "b873578d2d8564ad0da855f468c86c663161f5e1923e469cc8ba88fd57bcd8be"
+    },
+    {
+      "callsign": "Mike",
+      "file": "mike.wav",
+      "source_start": 15.072,
+      "source_end": 15.528,
+      "duration": 0.456,
+      "sha256": "b649c832af87052a97682099e590559cb64146b9b1d683be2c02be88de1082b9"
+    },
+    {
+      "callsign": "November",
+      "file": "november.wav",
+      "source_start": 16.227,
+      "source_end": 16.843,
+      "duration": 0.616,
+      "sha256": "614d45a6ca20e06b3094ece93cb4b629b3d8dc24418439f5f98a7af4da5a93ca"
+    },
+    {
+      "callsign": "Oscar",
+      "file": "oscar.wav",
+      "source_start": 17.582,
+      "source_end": 18.098,
+      "duration": 0.516,
+      "sha256": "ac3023febb1db381c3448d2ff93bc9a18dc9d4ea53ee862deb552a3a9ec9889c"
+    },
+    {
+      "callsign": "Papa",
+      "file": "papa.wav",
+      "source_start": 18.727,
+      "source_end": 19.203,
+      "duration": 0.476,
+      "sha256": "336df5e012b390864aef054741bca441d93daad532654cc5b07dbb91fbac2879"
+    },
+    {
+      "callsign": "Quebec",
+      "file": "quebec.wav",
+      "source_start": 19.977,
+      "source_end": 20.458,
+      "duration": 0.481,
+      "sha256": "8e016d6b50cd951999552d0ddf8bdd9288c0f62160245dfe092f85b0a00c7c74"
+    },
+    {
+      "callsign": "Romeo",
+      "file": "romeo.wav",
+      "source_start": 21.242,
+      "source_end": 21.743,
+      "duration": 0.501,
+      "sha256": "b473698319ea0ad38379488d2de2410d9cc827db9f90f9044124b3f0c8bbad7a"
+    },
+    {
+      "callsign": "Sierra",
+      "file": "sierra.wav",
+      "source_start": 22.412,
+      "source_end": 22.958,
+      "duration": 0.546,
+      "sha256": "d0f4d6d8da400078085a590c5b9f2be16a3860e98a477dcf2d22c744039a3385"
+    },
+    {
+      "callsign": "Tango",
+      "file": "tango.wav",
+      "source_start": 23.682,
+      "source_end": 24.193,
+      "duration": 0.511,
+      "sha256": "f9afb379b6516deca3d21440103630bcb1138a684be93025e836625e27b8b27f"
+    },
+    {
+      "callsign": "Uniform",
+      "file": "uniform.wav",
+      "source_start": 24.962,
+      "source_end": 25.553,
+      "duration": 0.591,
+      "sha256": "87d8ee3f96affcde3976952da9fcb2d7ea41fa15904e564bbe50c9cb0a1ad9a0"
+    },
+    {
+      "callsign": "Victor",
+      "file": "victor.wav",
+      "source_start": 26.297,
+      "source_end": 26.778,
+      "duration": 0.481,
+      "sha256": "4f8470c25fffb29d79588cb73a80b2c84038b224fff49bfdfc650e3f95f440b3"
+    },
+    {
+      "callsign": "Whiskey",
+      "file": "whiskey.wav",
+      "source_start": 27.492,
+      "source_end": 28.023,
+      "duration": 0.531,
+      "sha256": "5849654695470299a649bd081dfe3c98838df5540fe8d9194474ca7181401338"
+    },
+    {
+      "callsign": "Xray",
+      "file": "xray.wav",
+      "source_start": 28.892,
+      "source_end": 29.423,
+      "duration": 0.531,
+      "sha256": "ddc00756ad4d07b19fb87490fe46f4fdc27ca2c708ccc39fcec14acc43b15bf9"
+    },
+    {
+      "callsign": "Yankee",
+      "file": "yankee.wav",
+      "source_start": 30.262,
+      "source_end": 30.788,
+      "duration": 0.526,
+      "sha256": "0b1408f0093152c4de43f09e53a4f88900a39bea01ba76e81e32b34e01f15833"
+    },
+    {
+      "callsign": "Zulu",
+      "file": "zulu.wav",
+      "source_start": 31.587,
+      "source_end": 32.043,
+      "duration": 0.456,
+      "sha256": "df66a6c6fef8cc6032838322e845069ed088929d5120e3ebd88e5c62e4293efe"
+    },
+    {
+      "callsign": "digit0",
+      "file": "digit0.wav",
+      "source_start": 33.602,
+      "source_end": 34.063,
+      "duration": 0.461,
+      "sha256": "7452d6ef0107921870c1ede785eb341887010c84ce63ee09e3876504313c6da6"
+    },
+    {
+      "callsign": "digit1",
+      "file": "digit1.wav",
+      "source_start": 34.802,
+      "source_end": 35.163,
+      "duration": 0.361,
+      "sha256": "dc3dab2849fd5b46ae9a51fe969655d51163074eaaa23770ddb9544c639061bc"
+    },
+    {
+      "callsign": "digit2",
+      "file": "digit2.wav",
+      "source_start": 35.897,
+      "source_end": 36.188,
+      "duration": 0.291,
+      "sha256": "2d65c79e38f0c21056af2fcd6182848c67a7b258493e82b3f77242d296e69fc0"
+    },
+    {
+      "callsign": "digit3",
+      "file": "digit3.wav",
+      "source_start": 37.052,
+      "source_end": 37.343,
+      "duration": 0.291,
+      "sha256": "47234737e93989947bbd70fa6693a63298b9ed9ba20d385860199ca3196f0401"
+    },
+    {
+      "callsign": "digit4",
+      "file": "digit4.wav",
+      "source_start": 38.167,
+      "source_end": 38.523,
+      "duration": 0.356,
+      "sha256": "51e4bdb146f6aec2da9172a9f8acf3c51ca7356e217324f75d1c2ba9d1644713"
+    },
+    {
+      "callsign": "digit5",
+      "file": "digit5.wav",
+      "source_start": 39.292,
+      "source_end": 39.643,
+      "duration": 0.351,
+      "sha256": "24113173345204e1055f8117134ddab0ab13363a49fdf15d707b2b8b4c40df01"
+    },
+    {
+      "callsign": "digit6",
+      "file": "digit6.wav",
+      "source_start": 40.467,
+      "source_end": 41.028,
+      "duration": 0.561,
+      "sha256": "14fd3f4a859c0e34e4a08529df22328e246afe78114d01a59cdbd6ff55ac9330"
+    },
+    {
+      "callsign": "digit7",
+      "file": "digit7.wav",
+      "source_start": 41.772,
+      "source_end": 42.203,
+      "duration": 0.431,
+      "sha256": "0023d0dbc1eed5660e68df02e702bab67f98014693c385d7fe15a58b27b394b9"
+    },
+    {
+      "callsign": "digit8",
+      "file": "digit8.wav",
+      "source_start": 42.977,
+      "source_end": 43.423,
+      "duration": 0.446,
+      "sha256": "8eeddd4c9851c6de69f9fae226aa7e6dc2f5f6c10d71af1478b06328fde55893"
+    },
+    {
+      "callsign": "digit9",
+      "file": "digit9.wav",
+      "source_start": 44.232,
+      "source_end": 44.618,
+      "duration": 0.386,
+      "sha256": "47bc058f417578c4357b5e2fcd955b3aa60996b8a2740bccf1c2fb420a26ead8"
+    }
+  ]
+}

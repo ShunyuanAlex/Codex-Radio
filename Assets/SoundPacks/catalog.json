@@ -1,0 +1,146 @@
+[
+  {
+    "pack": "airbus",
+    "status": "reading",
+    "signature": "短按键",
+    "duration": 0.05187,
+    "peak": 0.65,
+    "active_rms_target_db": -15,
+    "sha256": "87731f5dac95cac46500f2cbecd91bbc0faf970c3ed462367b85cf3f1cc71b89"
+  },
+  {
+    "pack": "airbus",
+    "status": "testing",
+    "signature": "单声短铃",
+    "duration": 0.25,
+    "peak": 0.28762,
+    "active_rms_target_db": -15,
+    "sha256": "7899a70350ee38619f34a3b2edd4388cb0e49a6abc0770cbdf259d78ffd4fac1"
+  },
+  {
+    "pack": "airbus",
+    "status": "unknown",
+    "signature": "双按键回执",
+    "duration": 0.18875,
+    "peak": 0.65,
+    "active_rms_target_db": -15,
+    "sha256": "bf0c9fc5f8eb0a362aa3740d13cf452b980a9066714ed8fcd2743a69b31fb12b"
+  },
+  {
+    "pack": "airbus",
+    "status": "compacting",
+    "signature": "高低收束音",
+    "duration": 0.535,
+    "peak": 0.2859,
+    "active_rms_target_db": -15,
+    "sha256": "36612a4ee3cf659e23921458679396525c9812a1a53e15ddb4fd011140c46afe"
+  },
+  {
+    "pack": "airbus",
+    "status": "complete",
+    "signature": "完整双钟声",
+    "duration": 1.80575,
+    "peak": 0.34515,
+    "active_rms_target_db": -15,
+    "sha256": "26ced11401f1e1a93da805faaffe2212b1d237d53ad762cdc800e29ee21ad056"
+  },
+  {
+    "pack": "airbus",
+    "status": "waiting",
+    "signature": "间隔双提醒",
+    "duration": 0.7,
+    "peak": 0.43655,
+    "active_rms_target_db": -15,
+    "sha256": "329847457da39d7392dd9650c931648efc1ba4707c9854389d1aa5be14bd8a2a"
+  },
+  {
+    "pack": "airbus",
+    "status": "cancelled",
+    "signature": "断开提示",
+    "duration": 0.28,
+    "peak": 0.38418,
+    "active_rms_target_db": -15,
+    "sha256": "693f969214a84d4b246a79a53551c29f480b53768e4f5de3720e646b4b5e527e"
+  },
+  {
+    "pack": "airbus",
+    "status": "blocked",
+    "signature": "连续三连告警",
+    "duration": 1.1,
+    "peak": 0.38915,
+    "active_rms_target_db": -15,
+    "sha256": "b79bfbc428f2fc96391357879e8074abd80b7b5ab7935a755a77e4cf0bc76374"
+  },
+  {
+    "pack": "boeing",
+    "status": "reading",
+    "signature": "短按键",
+    "duration": 0.12429,
+    "peak": 0.65,
+    "active_rms_target_db": -15,
+    "sha256": "404d14543088c420f17f9cb240970389defe5ec429a80e521b84fcf5da98afee"
+  },
+  {
+    "pack": "boeing",
+    "status": "testing",
+    "signature": "单声短铃",
+    "duration": 0.2,
+    "peak": 0.28392,
+    "active_rms_target_db": -15,
+    "sha256": "60f3788aeab29b0f95febb84db1ec60094310661291c6ee371705531149b02ab"
+  },
+  {
+    "pack": "boeing",
+    "status": "unknown",
+    "signature": "双按键回执",
+    "duration": 0.33358,
+    "peak": 0.65,
+    "active_rms_target_db": -15,
+    "sha256": "f3eefec5da02f77808e037a7d927744814422300652b886bff677c84137de387"
+  },
+  {
+    "pack": "boeing",
+    "status": "compacting",
+    "signature": "高低收束音",
+    "duration": 0.51187,
+    "peak": 0.2831,
+    "active_rms_target_db": -15,
+    "sha256": "2314c2dd23be5283dc5323d0e8aa5524341dacd9131827c1780e088f53f1ef01"
+  },
+  {
+    "pack": "boeing",
+    "status": "complete",
+    "signature": "完整双钟声",
+    "duration": 2.08575,
+    "peak": 0.34077,
+    "active_rms_target_db": -15,
+    "sha256": "a715e66566bcd36076e6f1d1321f26c7cfdae48f7cf1f3e62653740bd31ba7a4"
+  },
+  {
+    "pack": "boeing",
+    "status": "waiting",
+    "signature": "间隔双提醒",
+    "duration": 0.88,
+    "peak": 0.31414,
+    "active_rms_target_db": -15,
+    "sha256": "15e58e11014e8f0dbf792f21970d61a65a6d9bcf5f6629b52f8d32248a139d0d"
+  },
+  {
+    "pack": "boeing",
+    "status": "cancelled",
+    "signature": "断开提示",
+    "duration": 0.62,
+    "peak": 0.57669,
+    "active_rms_target_db": -15,
+    "sha256": "3291791513868bdc6bb4ac3889b8889b3826c370cc011d4d7f209cc71e4de1de"
+  },
+  {
+    "pack": "boeing",
+    "status": "blocked",
+    "signature": "连续三连告警",
+    "duration": 0.92,
+    "peak": 0.43582,
+    "active_rms_target_db": -15,
+    "sha256": "598bc774857a72efb34904242e470a6a770b41f737547fa98329f561e5a43527"
+  }
+]

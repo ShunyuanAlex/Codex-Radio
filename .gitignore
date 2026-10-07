@@ -1,0 +1,12 @@
+build/
+__pycache__/
+*.pyc
+.DS_Store
+*.dmg
+*.zip
+.env
+.env.*
+Migration/
+HookReview/hooks.review.json
+HookReview/compaction-hooks.review.json
+HookReview/review-manifest.json
