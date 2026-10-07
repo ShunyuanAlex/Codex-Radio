@@ -153,19 +153,39 @@ struct AudioClip: Equatable {
 }
 
 enum SoundPack:String,CaseIterable,Identifiable {
-    case boeing,airbus
+    case boeing,airbus,j11a
     var id:String{rawValue}
     static let preferenceKey="soundPackV1"
-    var title:String{self == .boeing ? "波音" : "空客"}
-    var subtitle:String{self == .boeing ? "777 · 清脆钟声与蜂鸣提醒" : "A320 · 高低钟声与三连警示"}
+    var title:String {
+        switch self {case .boeing:return "波音";case .airbus:return "空客";case .j11a:return "歼-11A"}
+    }
+    var displayCode:String {
+        switch self {case .boeing:return "BOEING";case .airbus:return "AIRBUS";case .j11a:return "J-11A"}
+    }
+    var vehicle:String {
+        switch self {case .boeing:return "波音 / 777";case .airbus:return "空客 / A320";case .j11a:return "中国 / 歼-11A"}
+    }
+    var subtitle:String {
+        switch self {
+        case .boeing:return "777 · 清脆钟声与蜂鸣提醒"
+        case .airbus:return "A320 · 高低钟声与三连警示"
+        case .j11a:return "歼-11A · 座舱按键与电子警示"
+        }
+    }
+    var sourceNote:String {
+        self == .j11a ? "歼-11A / Su-27SK 模拟器共用素材 · 保留真人呼号" : "飞行模拟器素材改编 · 八类提示 · 保留真人呼号"
+    }
     static func load(from defaults:UserDefaults)->Self {
-        defaults.string(forKey:preferenceKey).flatMap(Self.init(rawValue:)) ?? .airbus
+        let stored=defaults.string(forKey:preferenceKey)
+        // Replace the withdrawn local preview without resetting other preferences.
+        if stored == "ssn775" || stored == "asr33" {Self.j11a.save(to:defaults);return .j11a}
+        return stored.flatMap(Self.init(rawValue:)) ?? .airbus
     }
     func save(to defaults:UserDefaults){defaults.set(rawValue,forKey:Self.preferenceKey)}
 }
 
 enum SoundMap {
-    // Eight separately mastered cues per pack. Raw simulator recordings and the
+    // Eight separately mastered cues per pack. Source recording excerpts and the
     // reproducible excerpt/envelope/level recipe are included with the source.
     static func cueStatus(_ status:RadioStatus)->RadioStatus {
         switch status {
@@ -178,7 +198,20 @@ enum SoundMap {
     static func clips(_ status: RadioStatus,pack:SoundPack = .airbus) -> [AudioClip] {
         [AudioClip(file:"Packs/\(pack.rawValue)/\(cueStatus(status).rawValue).wav",duration:3,pause:0)]
     }
-    static func description(_ status: RadioStatus) -> String {
+    static func description(_ status: RadioStatus,pack:SoundPack = .airbus) -> String {
+        if pack == .j11a {
+            switch cueStatus(status) {
+            case .reading:return "座舱按键 · 发送指令"
+            case .testing:return "单声短铃 · 正在处理"
+            case .unknown:return "双短电子音 · 收到工具回执"
+            case .compacting:return "高低收束音 · 整理上下文"
+            case .complete:return "上行双铃 · 本轮收尾"
+            case .waiting:return "间隔低频双提醒 · 需要操作"
+            case .cancelled:return "短降调 · 已经停止"
+            case .blocked:return "三连座舱警示 · 工具报错"
+            default:return ""
+            }
+        }
         switch cueStatus(status) {
         case .reading:return "短按键 · 发送指令"
         case .testing:return "单声短铃 · 正在处理"

@@ -6,7 +6,7 @@ import zipfile
 root = Path(__file__).resolve().parent
 app = Path(sys.argv[1]).resolve()
 assert app.name == "Codex Radio.app" and (app / "Contents/MacOS/CodexRadio").is_file()
-output = root / "build/Codex Radio-0.10.0.zip"
+output = root / "build/Codex Radio-0.11.2.zip"
 with zipfile.ZipFile(output, "w", compression=zipfile.ZIP_DEFLATED) as archive:
     for path in sorted(app.rglob("*")):
         if path.is_file():

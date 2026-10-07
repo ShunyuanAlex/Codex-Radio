@@ -33,3 +33,15 @@
 原始文件、固定上游提交和 SHA-256 见 `Assets/SoundSources/manifest.json`；成品参数见 `Assets/SoundPacks/catalog.json`；处理脚本见 `AudioTools/build_packs.py`。
 
 素材在本应用中被重新分配事件含义，**不表示真实飞机上的相应警报语义**。本项目与 OpenAI、Boeing、Airbus 无隶属或背书关系，也没有采用商业航空游戏原声。
+
+## 歼-11A 声音包
+
+- 项目：[FlightGear J-11A / Su-27SK](https://github.com/yanes19/SU-27SK/tree/925cb5317f3c66fa323a9e186e24d574e0b0881d)，固定提交 `925cb5317f3c66fa323a9e186e24d574e0b0881d`。
+- 作者：Yanes Bechir、FGUK team、Sidi Liang（歼-11A 变体）及上游 README 列出的贡献者。逐条文件原作者没有在包内独立标注，保留上游完整声明。
+- 机型依据：上游 `J-11A-set.xml` 明确提供 Shenyang J-11A 变体，使用项目共用 `Sounds` 音效。**这些是 J-11A / Su-27SK 共用的模拟器素材，不是经确认的中国飞机实机录音。**
+- 许可：上游 README 明确声明 **GNU GPL version 3 or later**，根目录 LICENSE 和 COPYING 同时附带 GPL-2.0 文本。我们原样保留这些上游说明，并按 README 的 GPL-3.0-or-later 声明分发音频改编，提供 [GPL-3.0 全文](https://www.gnu.org/licenses/gpl-3.0.html)、所有原始输入和处理源码。未将这些音频改标为应用代码的 GPL-2.0-only。
+- 原始素材：`Assets/SoundSources/j11a/click.wav`、`Cockpit-warning.wav`、`su-27cockpit-warning2.wav`；成品：`Assets/SoundPacks/j11a/`。
+- 2026-10-07 改动：转为 24 kHz 单声道 PCM、截取、端点包络、重采样移调、重复与停顿编排、有效电平匹配和峰值限制。没有增加语音或合成振荡器；没有采用枪炮、爆炸或长引擎声。播放时按真人呼号匹配有效 RMS。
+- 改编与事件映射：Codex Radio。八类提示是应用内重新编排，不代表原机警报含义；本应用与沈飞、原作者或 FlightGear 项目无官方隶属或背书关系。
+
+精确来源与哈希见 [素材清单](Assets/SoundSources/j11a/manifest.json)，切点与处理说明见 [来源说明](Assets/SoundSources/j11a/README.md) 和 `AudioTools/build_packs.py`。

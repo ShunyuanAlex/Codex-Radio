@@ -14,7 +14,7 @@ struct RadioPanel:View {
                     Spacer()
                     Menu {
                         ForEach(SoundPack.allCases){pack in Button((store.soundPack==pack ? "✓ " : "")+pack.title){store.setSoundPack(pack)}}
-                    }label:{Text(store.soundPack.title).font(.system(size:11,weight:.medium)).foregroundColor(FlightDeck.cyan)}.menuStyle(.borderlessButton).fixedSize().accessibilityLabel("选择飞机声音包")
+                    }label:{Text(store.soundPack.title).font(.system(size:11,weight:.medium)).foregroundColor(FlightDeck.cyan)}.menuStyle(.borderlessButton).fixedSize().accessibilityLabel("选择声音包")
                 }
                 FlightModeSelector(store:store)
                 Text(modeNote).font(.system(size:10)).foregroundColor(FlightDeck.muted)
@@ -95,7 +95,7 @@ struct RadioSettings:View {
     var pageTitle:String{pages.first{$0.0==store.settingsTab}?.1 ?? "通用"}
     var pageCode:String{pages.first{$0.0==store.settingsTab}?.2 ?? "SYSTEM"}
     var pageNote:String {
-        switch store.settingsTab{case "sounds":return "选择飞机声音包，安排每一类提示。";case "callsigns":return "按项目分配字母呼号，按对话分配数字。";case "setup":return "连接本机 Codex，确认授权与实时事件。";default:return "管理启动方式、播报输出与菜单栏外观。"}
+        switch store.settingsTab{case "sounds":return "选择声音包，安排每一类提示。";case "callsigns":return "按项目分配字母呼号，按对话分配数字。";case "setup":return "连接本机 Codex，确认授权与实时事件。";default:return "管理启动方式、播报输出与菜单栏外观。"}
     }
     var body:some View {
         HStack(spacing:0) {
@@ -110,7 +110,7 @@ struct RadioSettings:View {
                 Group {
                     switch store.settingsTab{case "sounds":sounds;case "callsigns":callsigns;case "setup":setup;default:general}
                 }.id(store.settingsTab).frame(maxWidth:.infinity,maxHeight:.infinity,alignment:.topLeading)
-                HStack{Circle().fill(FlightDeck.green).frame(width:4,height:4);Text("设置即时保存在本机").font(.system(size:10));Spacer();Text("CODEX RADIO  0.10.0").font(.system(size:9,design:.monospaced)).tracking(1)}.foregroundColor(FlightDeck.muted)
+                HStack{Circle().fill(FlightDeck.green).frame(width:4,height:4);Text("设置即时保存在本机").font(.system(size:10));Spacer();Text("CODEX RADIO  0.11.2").font(.system(size:9,design:.monospaced)).tracking(1)}.foregroundColor(FlightDeck.muted)
             }.padding(24).frame(maxWidth:.infinity,maxHeight:.infinity)
         }.frame(minWidth:860,minHeight:610).background(FlightDeck.background).foregroundColor(FlightDeck.text).preferredColorScheme(.dark).buttonStyle(FlightButtonStyle())
     }
@@ -131,7 +131,7 @@ struct RadioSettings:View {
     var general:some View {
         ScrollView {
             VStack(alignment:.leading,spacing:16) {
-                HStack(spacing:10){FlightReadout(title:"LINK / 接入",value:store.receivedCount>0 && store.connected ? "LIVE" : "STANDBY",tint:store.receivedCount>0 && store.connected ? FlightDeck.green : FlightDeck.amber);FlightReadout(title:"AUDIO / 播报",value:store.muted ? "MUTED" : "ON",tint:store.muted ? FlightDeck.muted : FlightDeck.green);FlightReadout(title:"PACK / 声音包",value:store.soundPack == .boeing ? "BOEING" : "AIRBUS")}
+                HStack(spacing:10){FlightReadout(title:"LINK / 接入",value:store.receivedCount>0 && store.connected ? "LIVE" : "STANDBY",tint:store.receivedCount>0 && store.connected ? FlightDeck.green : FlightDeck.amber);FlightReadout(title:"AUDIO / 播报",value:store.muted ? "MUTED" : "ON",tint:store.muted ? FlightDeck.muted : FlightDeck.green);FlightReadout(title:"PACK / 声音包",value:store.soundPack.displayCode)}
                 FlightSection("播报输出",code:"OUTPUT") {
                     HStack{VStack(alignment:.leading,spacing:5){Text("当前播报开关").font(.system(size:13,weight:.medium));Text("静音时仍接收状态；启用后只播报新事件。").font(.system(size:11)).foregroundColor(FlightDeck.muted)};Spacer();FlightSwitch(title:"播报声音",isOn:Binding(get:{!store.muted},set:{store.setMuted(!$0)})).disabled(!store.voicesReady)}
                     HStack(spacing:12){Text("音量").font(.system(size:12));Slider(value:Binding(get:{store.volume},set:{store.setVolume($0)}),in:0...0.5).tint(FlightDeck.cyan).accessibilityLabel("播报音量");Text(String(format:"%02d %%",Int((store.volume*100).rounded()))).font(.system(size:15,design:.monospaced)).foregroundColor(FlightDeck.cyan).frame(width:52,alignment:.trailing)}
@@ -147,9 +147,18 @@ struct RadioSettings:View {
     var sounds:some View {
         ScrollView {
             VStack(alignment:.leading,spacing:16) {
-                FlightSection("飞机声音包",code:"AIRFRAME") {
-                    HStack(spacing:12){ForEach(SoundPack.allCases){pack in Button{store.setSoundPack(pack)}label:{VStack(alignment:.leading,spacing:8){HStack{Text(pack == .boeing ? "BOEING" : "AIRBUS").font(.system(size:16,weight:.semibold,design:.monospaced));Spacer();Circle().fill(store.soundPack==pack ? FlightDeck.cyan : FlightDeck.muted.opacity(0.2)).frame(width:5,height:5)};Text(pack == .boeing ? "波音 / 777" : "空客 / A320").font(.system(size:11))}.padding(.vertical,5).frame(maxWidth:.infinity)}.buttonStyle(FlightButtonStyle(selected:store.soundPack==pack)).accessibilityLabel("声音包："+pack.title).accessibilityValue(store.soundPack==pack ? "已选择" : "未选择")}}
-                    Text("飞行模拟器素材改编 · 八类提示 · 保留真人呼号").font(.system(size:10)).foregroundColor(FlightDeck.muted)
+                FlightSection("声音包",code:"SOUND PACK") {
+                    LazyVGrid(columns:[GridItem(.adaptive(minimum:170),spacing:12)],spacing:12) {
+                        ForEach(SoundPack.allCases){pack in
+                            Button{store.setSoundPack(pack)}label:{
+                                VStack(alignment:.leading,spacing:8){
+                                    HStack{Text(pack.displayCode).font(.system(size:16,weight:.semibold,design:.monospaced));Spacer();Circle().fill(store.soundPack==pack ? FlightDeck.cyan : FlightDeck.muted.opacity(0.2)).frame(width:5,height:5)}
+                                    Text(pack.vehicle).font(.system(size:11))
+                                }.padding(.vertical,5).frame(maxWidth:.infinity,alignment:.leading)
+                            }.buttonStyle(FlightButtonStyle(selected:store.soundPack==pack)).accessibilityLabel("声音包："+pack.title).accessibilityValue(store.soundPack==pack ? "已选择" : "未选择")
+                        }
+                    }
+                    Text(store.soundPack.sourceNote).font(.system(size:10)).foregroundColor(FlightDeck.muted)
                 }
                 FlightSection("收听模式",code:"MONITOR") {
                     FlightModeSelector(store:store)
@@ -170,7 +179,7 @@ struct RadioSettings:View {
     func soundRow(_ status:RadioStatus,index:Int)->some View {
         HStack(spacing:12) {
             Text(String(format:"%02d",index+1)).font(.system(size:11,design:.monospaced)).foregroundColor(FlightDeck.muted).frame(width:20)
-            VStack(alignment:.leading,spacing:5){Text(status.title).font(.system(size:12,weight:.medium));Text(store.customClips[status.rawValue]==nil ? SoundMap.description(status) : "个人音源").font(.system(size:10)).foregroundColor(FlightDeck.muted)}.frame(maxWidth:.infinity,alignment:.leading)
+            VStack(alignment:.leading,spacing:5){Text(status.title).font(.system(size:12,weight:.medium));Text(store.customClips[status.rawValue]==nil ? SoundMap.description(status,pack:store.soundPack) : "个人音源").font(.system(size:10)).foregroundColor(FlightDeck.muted)}.frame(maxWidth:.infinity,alignment:.leading)
             if store.mode=="custom"{FlightSwitch(title:"自定义播报："+status.title,isOn:Binding(get:{store.customSounds.contains(status)},set:{store.setCustomSound(status,enabled:$0)}))}
             else{Text(store.mode=="detail" || ListeningMode.focusSounds.contains(status) ? "播报" : "过滤").font(.system(size:10)).foregroundColor(store.mode=="detail" || ListeningMode.focusSounds.contains(status) ? FlightDeck.green : FlightDeck.muted).frame(width:42)}
             Button{store.audition(status)}label:{Image(systemName:"play.fill").font(.system(size:10)).frame(width:12,height:14)}.disabled(store.muted || store.selected.isEmpty || !store.voicesReady).accessibilityLabel("试听"+store.soundPack.title+status.title)

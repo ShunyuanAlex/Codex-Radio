@@ -20,6 +20,12 @@ cp Assets/SoundSources/boeing/AUTHORS "$wing_app/Contents/Resources/Licenses/Boe
 cp Assets/SoundSources/airbus/README.md "$wing_app/Contents/Resources/Licenses/A320-Authors.md"
 cp LICENSE "$wing_app/Contents/Resources/Licenses/Codex-Radio-GPL-2.0.txt"
 cp THIRD_PARTY_NOTICES.md "$wing_app/Contents/Resources/Licenses/"
+cp Assets/SoundSources/j11a/README.md "$wing_app/Contents/Resources/Licenses/J-11A-Source.md"
+cp Assets/SoundSources/j11a/manifest.json "$wing_app/Contents/Resources/Licenses/J-11A-Manifest.json"
+cp Assets/SoundSources/j11a/UPSTREAM-README.md "$wing_app/Contents/Resources/Licenses/J-11A-Upstream.md"
+cp Assets/SoundSources/j11a/GPL-3.0.txt "$wing_app/Contents/Resources/Licenses/J-11A-GPL-3.0.txt"
+cp Assets/SoundSources/j11a/UPSTREAM-LICENSE-GPL-2.0.txt "$wing_app/Contents/Resources/Licenses/J-11A-Upstream-GPL-2.0.txt"
+cp Assets/SoundSources/j11a/UPSTREAM-COPYING.txt "$wing_app/Contents/Resources/Licenses/J-11A-Upstream-Copying.txt"
 cp Assets/Voices/*.wav "$wing_app/Contents/Resources/Voices/"
 cp '说明与来源.txt' "$wing_app/Contents/Resources/"
 cp '接入边界.txt' "$wing_app/Contents/Resources/"
@@ -33,8 +39,8 @@ cat > "$wing_app/Contents/Info.plist" <<'PLIST'
 <key>CFBundleIdentifier</key><string>local.wingradio.menubar</string>
 <key>CFBundleExecutable</key><string>CodexRadio</string>
 <key>CFBundlePackageType</key><string>APPL</string>
-<key>CFBundleShortVersionString</key><string>0.10.0</string>
-<key>CFBundleVersion</key><string>15</string>
+<key>CFBundleShortVersionString</key><string>0.11.2</string>
+<key>CFBundleVersion</key><string>18</string>
 <key>LSUIElement</key><true/>
 <key>LSMinimumSystemVersion</key><string>13.0</string>
 <key>NSHighResolutionCapable</key><true/>
@@ -50,5 +56,5 @@ python3 HookReview/test_native_collector.py "$wing_app/Contents/Helpers/CodexRad
 python3 package.py "$wing_app"
 print -r -- "$wing_app" > build/staged-app-path.txt
 print -r -- "Verified app: $wing_app"
-print -r -- "Release archive: $PWD/build/Codex Radio-0.10.0.zip"
+print -r -- "Release archive: $PWD/build/Codex Radio-0.11.2.zip"
 zsh make-dmg.sh "$wing_app"

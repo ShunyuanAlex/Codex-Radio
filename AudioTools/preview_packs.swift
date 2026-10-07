@@ -15,7 +15,7 @@ import Foundation
         }
         func db(_ rms:Float)->Double{20*log10(Double(max(0.000001,rms)))}
         var report:[[String:Any]]=[]
-        for pack in ["boeing","airbus"] {
+        for pack in ["boeing","airbus","j11a"] {
             var sequence:[Float]=[]
             for status in ["reading","testing","unknown","compacting","complete","waiting","cancelled","blocked"] {
                 let cue=RecordedAudio.Piece(url:root.appendingPathComponent("Assets/SoundPacks/\(pack)/\(status).wav"))

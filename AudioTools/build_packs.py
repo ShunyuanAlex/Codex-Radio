@@ -1,4 +1,4 @@
-"""Render the two simulator-derived cue packs; no synthesized tones or speech.
+"""Render recorded cue packs; no synthesized tones or speech.
 
 Raw recordings, pinned source URLs and licenses live in Assets/SoundSources.
 Edits made 2026-10-07: excerpts, envelopes, level matching and rhythmic assembly.
@@ -72,10 +72,33 @@ def save(dest, samples):
         wav.writeframes(array.array("h", [round(x * 32767) for x in samples]).tobytes())
 
 
+def j11a_cues():
+    # FlightGear J-11A / Su-27SK shared simulation assets; see source README.
+    # Excerpts and resampling only; no new oscillator or speech generation.
+    click = excerpt(load("j11a", "click.wav"), 0, .09, fade_in=.001, fade_out=.012)
+    high = load("j11a", "su-27cockpit-warning2.wav")
+    low = load("j11a", "Cockpit-warning.wav")
+    def chime(ratio, duration):
+        return excerpt(transpose(excerpt(high, .56, .42), ratio), duration=duration,
+                       fade_in=.004, fade_out=duration*.80)
+    processing = chime(2.0, .20)
+    receipt = chime(3.0, .07)
+    compact = join(chime(2.8, .13), .04, chime(1.8, .23))
+    complete = join(chime(1.5, .23), .085, chime(2.0, .21))
+    attention = excerpt(low, .055, .17, fade_in=.012, fade_out=.05)
+    stop = chime(.85, .27)
+    alarm = excerpt(low, .055, .22, fade_in=.005, fade_out=.018)
+    return dict(zip(ORDER, [click, processing, join(receipt, .085, receipt), compact,
+        complete, join(attention, .38, attention), stop,
+        join(alarm, .075, alarm, .075, alarm)]))
+
+
 def build(pack):
     def cut(name, start=0, duration=3, **kwargs):
         return excerpt(load(pack, name), start, duration, **kwargs)
-    if pack == "airbus":
+    if pack == "j11a":
+        cues = j11a_cues()
+    elif pack == "airbus":
         click = cut("click.wav", fade_in=.001, fade_out=.003)
         processing = cut("FL2070/320cabinalert.wav", 0, .25, fade_out=.07)
         compact = join(cut("cabinalert.wav", 0, .19, fade_out=.04), .055, cut("cabinalert.wav", .82, .29, fade_out=.09))
@@ -93,24 +116,26 @@ def build(pack):
         stop = cut("autopilot-disengage.wav", .12, .62, fade_out=.25)
         alarm = cut("config-warning.wav", .12, .26, fade_out=.025)
         warning = join(alarm, .07, alarm, .07, alarm)
-    receipt = join(click, .085, click)
-    cues = dict(zip(ORDER, [click, processing, receipt, compact, complete, join(attention, .38, attention), stop, warning]))
+    if pack != "j11a":
+        receipt = join(click, .085, click)
+        cues = dict(zip(ORDER, [click, processing, receipt, compact, complete, join(attention, .38, attention), stop, warning]))
     # The runtime additionally matches each cue to the actual joined callsign's
     # active RMS. This baseline makes standalone cue previews comparable to speech.
     targets = dict.fromkeys(ORDER, -15)
     entries = []
     sampler = []
-    for status, signature in zip(ORDER, SIGNATURES):
+    signatures = ["座舱按键", "单声短铃", "双短电子音", "高低收束音", "上行双铃", "间隔低频双提醒", "短降调", "三连座舱警示"] if pack == "j11a" else SIGNATURES
+    for status, signature in zip(ORDER, signatures):
         samples = level(cues[status], targets[status])
         dest = ROOT / "Assets/SoundPacks" / pack / (status + ".wav")
         save(dest, samples)
         entries.append(dict(pack=pack, status=status, signature=signature, duration=round(len(samples)/RATE, 5), peak=round(max(map(abs, samples)), 5), active_rms_target_db=targets[status], sha256=hashlib.sha256(dest.read_bytes()).hexdigest()))
         sampler = join(sampler, samples, .8)
-    save(ROOT / "build/sound-preview-0.8.1" / (pack + "-sampler.wav"), sampler)
+    save(ROOT / "build/sound-preview" / (pack + "-sampler.wav"), sampler)
     return entries
 
 
 if __name__ == "__main__":
-    result = build("airbus") + build("boeing")
+    result = build("airbus") + build("boeing") + build("j11a")
     (ROOT / "Assets/SoundPacks/catalog.json").write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n")
     print(json.dumps(result, ensure_ascii=False, indent=2))

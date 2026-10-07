@@ -1,0 +1,32 @@
+{
+  "title": "J-11A / Su-27SK FlightGear simulation audio",
+  "aircraft": "Shenyang J-11A",
+  "repository": "https://github.com/yanes19/SU-27SK",
+  "revision": "925cb5317f3c66fa323a9e186e24d574e0b0881d",
+  "authors": [
+    "Yanes Bechir",
+    "FGUK team",
+    "Sidi Liang (J-11A variant)",
+    "upstream contributors credited in README"
+  ],
+  "license": "GPL-3.0-or-later per upstream README; upstream GPL-2.0 license files retained unchanged",
+  "source_note": "Shared simulation sound assets of J-11A and Su-27SK; not verified real-aircraft recordings.",
+  "retrieved": "2026-10-07",
+  "files": [
+    {
+      "file": "click.wav",
+      "url": "https://raw.githubusercontent.com/yanes19/SU-27SK/925cb5317f3c66fa323a9e186e24d574e0b0881d/Sounds/click.wav",
+      "sha256": "a17c2923cc2377f176fb760c8ef06217ddc3d1e2eabb30a957e1e8a46d55a442"
+    },
+    {
+      "file": "Cockpit-warning.wav",
+      "url": "https://raw.githubusercontent.com/yanes19/SU-27SK/925cb5317f3c66fa323a9e186e24d574e0b0881d/Sounds/Cockpit-warning.wav",
+      "sha256": "0fd1dea7b61ff9540b11c4e8296b43a31d6991066e1efb20284a832c374e5cdc"
+    },
+    {
+      "file": "su-27cockpit-warning2.wav",
+      "url": "https://raw.githubusercontent.com/yanes19/SU-27SK/925cb5317f3c66fa323a9e186e24d574e0b0881d/Sounds/su-27cockpit-warning2.wav",
+      "sha256": "0f699df5733f6eccd37b9567b52cd9d0844261eb72c83a7bd83f9e032a16b230"
+    }
+  ]
+}

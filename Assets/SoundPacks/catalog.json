@@ -142,5 +142,77 @@
     "peak": 0.43582,
     "active_rms_target_db": -15,
     "sha256": "598bc774857a72efb34904242e470a6a770b41f737547fa98329f561e5a43527"
+  },
+  {
+    "pack": "j11a",
+    "status": "reading",
+    "signature": "座舱按键",
+    "duration": 0.09,
+    "peak": 0.65,
+    "active_rms_target_db": -15,
+    "sha256": "7a6d5ab46ee9fc597f3160dc252057fb20013f712584e243364076c9e4c30f58"
+  },
+  {
+    "pack": "j11a",
+    "status": "testing",
+    "signature": "单声短铃",
+    "duration": 0.2,
+    "peak": 0.44697,
+    "active_rms_target_db": -15,
+    "sha256": "3ec52e150bc577fb01de8454dc4d3cb8a209fb7ea388280d1ba93df6bdc5ce3c"
+  },
+  {
+    "pack": "j11a",
+    "status": "unknown",
+    "signature": "双短电子音",
+    "duration": 0.225,
+    "peak": 0.46429,
+    "active_rms_target_db": -15,
+    "sha256": "102b374e950cec02f58ca66b1961b2fc60fa60c67e5a115576d06b0738c1a74c"
+  },
+  {
+    "pack": "j11a",
+    "status": "compacting",
+    "signature": "高低收束音",
+    "duration": 0.4,
+    "peak": 0.44459,
+    "active_rms_target_db": -15,
+    "sha256": "5af0e50a73606c826638382e720d4709516ae1cd0a95298fcd1776ab9fb93b23"
+  },
+  {
+    "pack": "j11a",
+    "status": "complete",
+    "signature": "上行双铃",
+    "duration": 0.525,
+    "peak": 0.45037,
+    "active_rms_target_db": -15,
+    "sha256": "4f9a282148c15fcb3cd8dc723516262b72fb5bfeed5a4449829d4cee6b69b3fc"
+  },
+  {
+    "pack": "j11a",
+    "status": "waiting",
+    "signature": "间隔低频双提醒",
+    "duration": 0.72,
+    "peak": 0.44364,
+    "active_rms_target_db": -15,
+    "sha256": "cbe4cf18914279ba9c7b9f4e62d30c696201cc52b68596ef4febdc4d0917c168"
+  },
+  {
+    "pack": "j11a",
+    "status": "cancelled",
+    "signature": "短降调",
+    "duration": 0.27,
+    "peak": 0.46889,
+    "active_rms_target_db": -15,
+    "sha256": "5f0ecf1ce284dd19bd6c890b0799174bcaa0d504ccd62fafe382415675f0259b"
+  },
+  {
+    "pack": "j11a",
+    "status": "blocked",
+    "signature": "三连座舱警示",
+    "duration": 0.81,
+    "peak": 0.41301,
+    "active_rms_target_db": -15,
+    "sha256": "03a5ed530d4d0f593ca9c3c9991d563368ee9701c5cbd27059645a688c700038"
   }
 ]

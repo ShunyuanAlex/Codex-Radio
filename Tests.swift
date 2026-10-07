@@ -31,7 +31,7 @@ func runDomainTests() {
     }
     check("单音轨PCM编码长度和格式正确"){let d=RecordedAudio.wav([0,0.25,-0.25]);return d.count==50 && String(data:d.prefix(4),encoding:.ascii)=="RIFF" && String(data:d[8..<12],encoding:.ascii)=="WAVE"}
     check("缺少录音直接失败，没有合成或状态音替代"){do{_ = try RecordedAudio.compose([]);return false}catch{return true}}
-    check("两套声音包共16个音效可解码、无削波、时长受控且波形不同") {
+    check("所有声音包八类音效可解码、无削波、时长受控且波形不同") {
         guard let root=Bundle.main.resourceURL else{return false}
         var tracks=Set<Data>()
         for pack in SoundPack.allCases {
@@ -45,20 +45,30 @@ func runDomainTests() {
                 }catch{return false}
             }
         }
-        return tracks.count==16
+        return tracks.count==SoundPack.allCases.count*ListeningMode.availableSounds.count
     }
-    check("声音包默认空客，波音选择可恢复且损坏值安全回退") {
+    check("声音包默认空客，全部选择可恢复且损坏值安全回退") {
         let suite="radio-packs-test-"+UUID().uuidString
         guard let prefs=UserDefaults(suiteName:suite) else{return false};defer{prefs.removePersistentDomain(forName:suite)}
         guard SoundPack.load(from:prefs) == .airbus else{return false}
-        SoundPack.boeing.save(to:prefs)
-        guard SoundPack.load(from:prefs) == .boeing else{return false}
-        SoundPack.airbus.save(to:prefs)
-        guard SoundPack.load(from:prefs) == .airbus else{return false}
+        for pack in SoundPack.allCases {
+            pack.save(to:prefs)
+            guard SoundPack.load(from:prefs) == pack else{return false}
+        }
         prefs.set("corrupt",forKey:SoundPack.preferenceKey)
         return SoundPack.load(from:prefs) == .airbus
     }
-    check("全部16个提示匹配36个呼号与数字的有效电平，误差小于0.5dB且峰值受控") {
+    check("撤回的本地声音包迁移到歼-11A并持久保存") {
+        let suite="radio-pack-migration-"+UUID().uuidString
+        guard let prefs=UserDefaults(suiteName:suite) else{return false};defer{prefs.removePersistentDomain(forName:suite)}
+        prefs.set(0.34,forKey:"volume")
+        for previous in ["ssn775","asr33"] {
+            prefs.set(previous,forKey:SoundPack.preferenceKey)
+            guard SoundPack.load(from:prefs) == .j11a,prefs.string(forKey:SoundPack.preferenceKey)=="j11a" else{return false}
+        }
+        return prefs.double(forKey:"volume")==0.34
+    }
+    check("全部提示匹配36个呼号与数字的有效电平，误差小于0.5dB且峰值受控") {
         guard let root=Bundle.main.resourceURL else{return false}
         do {
             let cues=try SoundPack.allCases.flatMap {pack in
@@ -95,11 +105,11 @@ func runDomainTests() {
         let silence=[Float](repeating:0,count:480)
         return RecordedAudio.matchLevel(silence,to:[0.1,0.2])==silence && RecordedAudio.matchLevel([0.1,0.2],to:silence)==[0.1,0.2] && RecordedAudio.activeRMS([])==0
     }
-    check("两个机型的回执、收尾、等待与报错不会映射成同一音效") {
+    check("所有声音包的回执、收尾、等待与报错不会映射成同一音效") {
         SoundPack.allCases.allSatisfy { pack in
             let statuses:[RadioStatus]=[.unknown,.complete,.waiting,.blocked]
             let files=statuses.flatMap{SoundMap.clips($0,pack:pack).map(\.file)}
-            return Set(files).count==4 && RadioStatus.allCases.allSatisfy{!SoundMap.clips($0,pack:pack).isEmpty && !SoundMap.description($0).isEmpty}
+            return Set(files).count==4 && RadioStatus.allCases.allSatisfy{!SoundMap.clips($0,pack:pack).isEmpty && !SoundMap.description($0,pack:pack).isEmpty}
         }
     }
     check("切换声音包不改变真人呼号及叠化边界") {

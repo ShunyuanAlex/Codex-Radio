@@ -9,6 +9,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 import zipfile
 
 root = Path.cwd()
@@ -53,15 +54,25 @@ https://support.apple.com/en-us/102445
 
 设置按通用、声音与模式、呼号分配、接入与权限四页组织。
 采用飞机控制面板风格。通用可设置登录自启动、自动播报、音量和菜单栏。
-设置可选择“仅图标”或“图标 + Radio”、波音／空客声音包、模式与呼号。详细模式和自定义默认包含压缩提示。旧12项Hooks、呼号、编号与模式保持。
+设置可选择“仅图标”或“图标 + Radio”、波音／空客／歼-11A声音包、模式与呼号。详细模式和自定义默认包含压缩提示。旧12项Hooks、呼号、编号与模式保持。
 Source.zip 含对应完整源码、音源、许可证及“说明与来源.txt”“接入边界.txt”。
-源码遵循 GPL-2.0；真人呼号录音遵循 CC BY-SA 3.0。完整来源与许可见源码。
+源码遵循 GPL-2.0；真人呼号录音遵循 CC BY-SA 3.0；歼-11A 素材按上游声明保留 GPL 许可和作者署名。完整来源与许可见源码。
 ''')
     subprocess.run(['/usr/bin/codesign', '--verify', '--deep', '--strict', str(staging / app.name)], check=True)
     # DiskImages can fail to reopen a new image in a synced checkout. Verify in
     # the same local staging directory used for the signed app, then copy bytes.
     subprocess.run(['/usr/bin/hdiutil', 'create', '-volname', 'Codex Radio', '-srcfolder', str(staging), '-format', 'UDZO', '-ov', str(image)], check=True)
-    subprocess.run(['/usr/bin/hdiutil', 'verify', str(image)], check=True)
+    # DiskImages may still hold the newly created file briefly (EAGAIN).
+    # Retry that transient condition only; real verification failures still stop.
+    for attempt in range(3):
+        verified = subprocess.run(['/usr/bin/hdiutil', 'verify', str(image)], capture_output=True, text=True)
+        if verified.returncode == 0:
+            print(verified.stdout)
+            break
+        detail = verified.stdout + verified.stderr
+        if attempt == 2 or not any(message in detail for message in ['Resource temporarily unavailable', '资源暂时不可用']):
+            raise RuntimeError('Disk image verification failed: ' + detail)
+        time.sleep(attempt + 1)
     shutil.copyfile(image, output)
     if hashlib.sha256(image.read_bytes()).digest() != hashlib.sha256(output.read_bytes()).digest():
         raise RuntimeError('Copied disk image checksum mismatch')

@@ -1,8 +1,8 @@
 # Codex Radio
 
-一个原生 macOS 菜单栏应用，用**真人项目呼号 + 对话编号 + 航空提示音**播报本机 Codex 的工作状态。
+一个原生 macOS 菜单栏应用，用**真人项目呼号 + 对话编号 + 状态提示音**播报本机 Codex 的工作状态。
 
-A native macOS menu-bar companion for local Codex activity, with recorded callsigns and aviation-inspired sound packs.
+A native macOS menu-bar companion for local Codex activity, with recorded callsigns and selectable Boeing, Airbus and J-11A simulator sound packs.
 
 ![Codex Radio 控制面板示意](docs/radio-panel.svg)
 
@@ -13,13 +13,13 @@ A native macOS menu-bar companion for local Codex activity, with recorded callsi
 ## 功能
 
 - 飞机控制面板风格的菜单栏弹窗和设置，分为通用、声音与模式、呼号分配、接入与权限。
-- 波音 777、空客 A320 两款声音包，每款八类提示：发送、处理、工具返回、上下文压缩、本轮收尾、等待确认、停止、报错。
+- 波音 777、空客 A320、歼-11A 三款声音包，每款八类提示：发送、处理、工具返回、上下文压缩、本轮收尾、等待确认、停止、报错。
 - 专注、详细、自定义三种收听模式；呼号与数字紧凑连读，提示音匹配呼号有效电平。
 - 最近 7 天本地项目与对话目录，稳定的项目呼号和对话编号；子代理归入父对话。
 - 可分别设置登录时启动、启动后自动播报；记住音量、模式和菜单栏显示方式。
 - 内置原生事件收集器，新安装不需要 Python、Homebrew 或 Xcode。
 
-两款声音包来自公开的飞行模拟器项目，**不是飞机厂商的官方录音或产品**。Codex Radio 是独立项目，与 OpenAI、Boeing、Airbus 无隶属或背书关系。
+三款飞机声音包来自公开的飞行模拟器项目，**不是飞机厂商的官方录音或产品**。歼-11A 使用 FlightGear 的 J-11A / Su-27SK 项目共用座舱素材，经剪辑和节奏编排形成八类应用提示音；未声称是真实歼-11 座舱录音或原机告警语义。Codex Radio 是独立项目，与 OpenAI、Boeing、Airbus、沈飞或素材作者无隶属或背书关系。
 
 ## 安装与首次接入
 
@@ -66,16 +66,16 @@ zsh build.sh
 
 输出：
 
-- `build/Codex Radio-0.10.0.dmg`
-- `build/Codex Radio-0.10.0.zip`
+- `build/Codex Radio-0.11.2.dmg`
+- `build/Codex Radio-0.11.2.zip`
 - `build/verification.txt`
 
-构建先在临时目录生成通用应用，验证签名，运行 **117 项无声检查**，再打包。测试覆盖状态队列、编号、音轨、隔离首次安装、事件收集器与启动策略；不会注册真实登录项或修改用户 Hooks。通过这些检查不代表实体设备、主观听感或完整登录流程验收。
+构建先在临时目录生成通用应用，验证签名，运行 **118 项无声检查**，再打包。测试覆盖状态队列、编号、音轨、隔离首次安装、事件收集器与启动策略；不会注册真实登录项或修改用户 Hooks。通过这些检查不代表实体设备、主观听感或完整登录流程验收。
 
 `AudioTools/` 包含声音包与呼号片段的处理脚本；原始音源、固定来源提交、处理参数和 SHA-256 一并提供。
 
 ## 许可证与贡献
 
-应用源码按 [GPL-2.0](LICENSE) 分发。航空素材保留原 GPL-2.0 许可；真人呼号录音及其改编保留 **CC BY-SA 3.0**。详见 [第三方来源与改动](THIRD_PARTY_NOTICES.md)。
+应用源码按 [GPL-2.0](LICENSE) 分发。波音／空客素材保留原 GPL-2.0 许可；真人呼号录音及其改编保留 **CC BY-SA 3.0**。歼-11A 素材按上游 README 的 **GPL-3.0-or-later** 声明分发，并保留原项目附带的 GPL-2.0 文本和作者署名。详见 [第三方来源与改动](THIRD_PARTY_NOTICES.md)。
 
 欢迎通过 Issues 提交问题。请说明 macOS、Codex 与 Radio 版本及复现步骤；发布日志或截图前，请去掉对话标题、项目路径、会话标识和凭据。
