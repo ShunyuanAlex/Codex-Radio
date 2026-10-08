@@ -45,3 +45,13 @@
 - 改编与事件映射：Codex Radio。八类提示是应用内重新编排，不代表原机警报含义；本应用与沈飞、原作者或 FlightGear 项目无官方隶属或背书关系。
 
 精确来源与哈希见 [素材清单](Assets/SoundSources/j11a/manifest.json)，切点与处理说明见 [来源说明](Assets/SoundSources/j11a/README.md) 和 `AudioTools/build_packs.py`。
+
+## 周额度预警与耗尽报警
+
+- 沿用上述 B777 项目的 GPL-2.0 素材，固定提交相同；源文件为 `777-VMD/Sounds/GPWS/pull-up.wav`，完整原件保存在 `Assets/SoundSources/boeing/GPWS/`。
+- 作者、许可证沿用 `Assets/SoundSources/boeing/AUTHORS` 和 `LICENSE`，未声称是真实飞机录音或厂商官方音效。
+- 2026-10-09：转为 24 kHz 单声道 PCM、4 ms 端点淡化，完整短语重复两次，中间间隔 80 ms；播放时匹配 Alpha 呼号录音的有效电平。
+- 三款声音包共用此账户级警报，不添加项目呼号；不生成或克隆语音。
+- 成品 `Assets/Alerts/pull-up.wav`；来源与哈希见 `Assets/Alerts/manifest.json`，可用 `python3 AudioTools/build_quota_alarm.py` 重建。
+
+- 耗尽警报另用同项目 `config-warning.wav` 的完整非语音警报，24 kHz 单声道 PCM、10 ms 端点淡化，单次播放；与原工具报错的三连选段节奏不同。成品 `Assets/Alerts/quota-exhausted.wav`，对应原件已包含在上述 B777 来源目录和清单中。

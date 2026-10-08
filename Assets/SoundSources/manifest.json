@@ -180,5 +180,16 @@
     "url": "https://raw.githubusercontent.com/FGMEMBERS/A320-family/00038142d3443d7f4aec9410520df608e8ae7ba8/README.md",
     "sha256": "8a90c2cb3cd3506ee870f7454bb3ec741706e0ff537e72618794cd09eeeca9be",
     "local": "airbus/README.md"
+  },
+  {
+    "pack": "boeing",
+    "source": "777-VMD/Sounds/GPWS/pull-up.wav",
+    "url": "https://raw.githubusercontent.com/franck-vmd/Boeing-777-Flightgear/42b53cbd1abff5a2cbc868c6576c79c343405b3d/777-VMD/Sounds/GPWS/pull-up.wav",
+    "sha256": "b9f2b4fdf64e0b5d210311d185de83ed974101df8358f59f0eef9a8b7e116fc4",
+    "local": "boeing/GPWS/pull-up.wav",
+    "rate": 11025,
+    "channels": 1,
+    "width": 1,
+    "seconds": 1.2656689342403629
   }
 ]

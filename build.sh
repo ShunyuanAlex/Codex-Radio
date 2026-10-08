@@ -8,11 +8,12 @@ wing_app="$wing_staging/Codex Radio.app"
 mkdir -p "$wing_app/Contents/MacOS" "$wing_app/Contents/Helpers" "$wing_app/Contents/Resources/Integration" "$wing_app/Contents/Resources/Audio" "$wing_app/Contents/Resources/Voices"
 for radio_arch in arm64 x86_64; do
     swiftc -parse-as-library -swift-version 5 -O -module-cache-path "$PWD/build/module-cache" -target "$radio_arch-apple-macosx13.0" HookCollector.swift -o "$wing_staging/hook-$radio_arch"
-    swiftc -swift-version 5 -O -module-cache-path "$PWD/build/module-cache" -target "$radio_arch-apple-macosx13.0" -framework AppKit -framework SwiftUI -framework AVFoundation -framework ServiceManagement -lsqlite3 Domain.swift ConversationActivity.swift ConversationCatalog.swift RecordedAudio.swift LiveEvents.swift Integration.swift IntegrationTests.swift Startup.swift StartupTests.swift App.swift Cockpit.swift Views.swift Tests.swift -o "$wing_staging/app-$radio_arch"
+    swiftc -swift-version 5 -O -module-cache-path "$PWD/build/module-cache" -target "$radio_arch-apple-macosx13.0" -framework AppKit -framework SwiftUI -framework AVFoundation -framework ServiceManagement -lsqlite3 Domain.swift ConversationActivity.swift ConversationCatalog.swift RecordedAudio.swift LiveEvents.swift Integration.swift IntegrationTests.swift Startup.swift StartupTests.swift Quota.swift QuotaTests.swift App.swift Cockpit.swift Views.swift Tests.swift -o "$wing_staging/app-$radio_arch"
 done
 lipo -create "$wing_staging/app-arm64" "$wing_staging/app-x86_64" -output "$wing_app/Contents/MacOS/CodexRadio"
 lipo -create "$wing_staging/hook-arm64" "$wing_staging/hook-x86_64" -output "$wing_app/Contents/Helpers/CodexRadioHook"
 cp HookReview/collector.py HookReview/compaction_collector.py HookCollector.swift "$wing_app/Contents/Resources/Integration/"
+cp -R Assets/Alerts "$wing_app/Contents/Resources/Audio/Alerts"
 cp -R Assets/SoundPacks "$wing_app/Contents/Resources/Audio/Packs"
 mkdir -p "$wing_app/Contents/Resources/Licenses"
 cp Assets/SoundSources/boeing/LICENSE "$wing_app/Contents/Resources/Licenses/Boeing-777-GPL-2.0.txt"
@@ -39,8 +40,8 @@ cat > "$wing_app/Contents/Info.plist" <<'PLIST'
 <key>CFBundleIdentifier</key><string>local.wingradio.menubar</string>
 <key>CFBundleExecutable</key><string>CodexRadio</string>
 <key>CFBundlePackageType</key><string>APPL</string>
-<key>CFBundleShortVersionString</key><string>0.11.3</string>
-<key>CFBundleVersion</key><string>19</string>
+<key>CFBundleShortVersionString</key><string>0.12.0</string>
+<key>CFBundleVersion</key><string>20</string>
 <key>LSUIElement</key><true/>
 <key>LSMinimumSystemVersion</key><string>13.0</string>
 <key>NSHighResolutionCapable</key><true/>
@@ -56,5 +57,5 @@ python3 HookReview/test_native_collector.py "$wing_app/Contents/Helpers/CodexRad
 python3 package.py "$wing_app"
 print -r -- "$wing_app" > build/staged-app-path.txt
 print -r -- "Verified app: $wing_app"
-print -r -- "Release archive: $PWD/build/Codex Radio-0.11.3.zip"
+print -r -- "Release archive: $PWD/build/Codex Radio-0.12.0.zip"
 zsh make-dmg.sh "$wing_app"

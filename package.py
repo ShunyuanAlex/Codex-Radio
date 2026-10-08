@@ -6,12 +6,12 @@ import zipfile
 root = Path(__file__).resolve().parent
 app = Path(sys.argv[1]).resolve()
 assert app.name == "Codex Radio.app" and (app / "Contents/MacOS/CodexRadio").is_file()
-output = root / "build/Codex Radio-0.11.3.zip"
+output = root / "build/Codex Radio-0.12.0.zip"
 with zipfile.ZipFile(output, "w", compression=zipfile.ZIP_DEFLATED) as archive:
     for path in sorted(app.rglob("*")):
         if path.is_file():
             archive.write(path, "Codex Radio/Codex Radio.app/" + str(path.relative_to(app)))
-    for name in ["App.swift", "Views.swift", "Domain.swift", "ConversationActivity.swift", "ConversationCatalog.swift", "RecordedAudio.swift", "LiveEvents.swift", "Integration.swift", "IntegrationTests.swift", "HookCollector.swift", "Startup.swift", "StartupTests.swift", "Cockpit.swift", "Tests.swift", "build.sh", "package.py", "make-dmg.sh", "说明与来源.txt", "接入边界.txt", ".gitignore", "README.md", "CHANGELOG.md", "LICENSE", "THIRD_PARTY_NOTICES.md"]:
+    for name in ["App.swift", "Views.swift", "Domain.swift", "ConversationActivity.swift", "ConversationCatalog.swift", "RecordedAudio.swift", "LiveEvents.swift", "Integration.swift", "IntegrationTests.swift", "HookCollector.swift", "Startup.swift", "StartupTests.swift", "Quota.swift", "QuotaTests.swift", "Cockpit.swift", "Tests.swift", "build.sh", "package.py", "make-dmg.sh", "说明与来源.txt", "接入边界.txt", ".gitignore", "README.md", "CHANGELOG.md", "LICENSE", "THIRD_PARTY_NOTICES.md"]:
         archive.write(root / name, "Codex Radio/源码/" + name)
     # Never include generated hook definitions or local installation review records.
     for name in ["collector.py", "compaction_collector.py", "install.py", "test_collector.py", "test_compaction.py", "test_native_collector.py", "voice-catalog.json"]:

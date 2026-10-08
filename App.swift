@@ -24,6 +24,12 @@ final class RadioStore:NSObject,ObservableObject,AVAudioPlayerDelegate {
     @Published var pendingCount=0
     @Published var settingsTab="general"
     @Published var autoBroadcast=false
+    @Published var weeklyQuotaAlarm=WeeklyQuotaAlertGate.enabled(in:UserDefaults.standard)
+    @Published var weeklyQuota:WeeklyQuotaSnapshot?
+    @Published var quotaMessage="等待额度读取"
+    @Published var quotaBusy=false
+    var quotaTimer:Timer?
+    var quotaGeneration=UUID()
     let loginItems=LoginItemController()
     @Published var numberDrafts:[String:String]=[:]
     @Published var settingsMessage="编号保存后立即生效；同项目编号已占用时自动互换。"
@@ -70,6 +76,7 @@ final class RadioStore:NSObject,ObservableObject,AVAudioPlayerDelegate {
         soundPack=SoundPack.load(from:UserDefaults.standard)
         let startup=StartupPreferences.load(from:UserDefaults.standard)
         autoBroadcast=startup.autoBroadcast;volume=startup.volume
+        if !weeklyQuotaAlarm{quotaMessage="周额度报警已关闭"}
         queue.mode=mode;queue.customSounds=customSounds
         checkIntegration()
         // Existing reviewed installations keep their definitions and consent.
@@ -77,6 +84,7 @@ final class RadioStore:NSObject,ObservableObject,AVAudioPlayerDelegate {
         if metadataAllowed{connectEvents(Self.eventDirectory);refreshCatalog()}
         else{catalogNote="完成接入设置后读取本地项目与对话标题"}
         if startup.shouldEnableBroadcast(consent:metadataAllowed,configured:integration.complete,voicesReady:voicesReady){setMuted(false)}
+        quotaTimer=Timer.scheduledTimer(withTimeInterval:60,repeats:true){[weak self]_ in self?.refreshQuota()}
         catalogTimer=Timer.scheduledTimer(withTimeInterval:60,repeats:true){[weak self]_ in self?.refreshCatalog()}
     }
     var needsInitialSetup:Bool {
@@ -116,6 +124,41 @@ final class RadioStore:NSObject,ObservableObject,AVAudioPlayerDelegate {
                 }
             }
         }
+    }
+    func setWeeklyQuotaAlarm(_ enabled:Bool) {
+        weeklyQuotaAlarm=enabled;UserDefaults.standard.set(enabled,forKey:WeeklyQuotaAlertGate.enabledKey)
+        if enabled{refreshQuota()}
+        else{quotaGeneration=UUID();weeklyQuota=nil;quotaMessage="周额度报警已关闭";if queue.active?.status.isQuotaAlert == true{stopAll()}}
+    }
+    func refreshQuota() {
+        guard weeklyQuotaAlarm,metadataAllowed,connected,!quotaBusy else{return}
+        guard let executable=CodexQuotaClient.executable() else{weeklyQuota=nil;quotaMessage=CodexQuotaClient.Failure.unavailable.localizedDescription;return}
+        quotaBusy=true
+        let root=codexHome,token=quotaGeneration
+        DispatchQueue.global(qos:.utility).async{[weak self] in
+            let result=Result{try CodexQuotaClient.read(executable:executable,root:root)}
+            DispatchQueue.main.async {
+                guard let me=self else{return};me.quotaBusy=false
+                guard me.quotaGeneration==token,me.weeklyQuotaAlarm,me.metadataAllowed,me.connected,me.codexHome==root else{return}
+                switch result {
+                case .success(let quota):
+                    me.weeklyQuota=quota
+                    guard let quota else{me.quotaMessage="暂无可用的 Codex 周额度数据";return}
+                    let formatter=DateFormatter();formatter.dateFormat="M月d日 HH:mm"
+                    me.quotaMessage="重置于 \(formatter.string(from:Date(timeIntervalSince1970:quota.resetsAt))) · 每分钟检查"
+                    if let alarm=WeeklyQuotaAlertGate.observe(quota,scope:root.standardizedFileURL.path,canPlay:!me.muted && me.volume>0,defaults:UserDefaults.standard){me.enqueueQuotaAlarm(alarm)}
+                case .failure(let error):me.weeklyQuota=nil;me.quotaMessage=error.localizedDescription
+                }
+            }
+        }
+    }
+    func enqueueQuotaAlarm(_ alarm:WeeklyQuotaAlarm,audition:Bool=false) {
+        guard !muted,volume>0 else{return}
+        let event=RadioEvent(channel:"weekly-quota",status:alarm.status,origin:audition ? "试听" : "周额度",receivedAt:Date().timeIntervalSince1970)
+        latestNotice=event
+        if queue.offer(event,at:event.receivedAt){cancelAudio()}
+        addLog((audition ? "试听 / " : "")+alarm.title)
+        ensureTicker();pump()
     }
     func copyHooksReviewCommand() {
         let fm=FileManager.default
@@ -229,10 +272,11 @@ final class RadioStore:NSObject,ObservableObject,AVAudioPlayerDelegate {
     func connectEvents(_ url:URL) {
         guard metadataAllowed else{openSettings("setup");return}
         stopAll();liveReader.connect(url);connected=true;connectionLabel="等待新的实时事件"
+        refreshQuota()
         liveTimer?.invalidate();liveTimer=Timer.scheduledTimer(withTimeInterval:0.15,repeats:true){[weak self]_ in self?.receiveLive()}
         now=muted ? "实时监听已准备 · 当前静音" : "实时监听已准备 · 播报已启用"
     }
-    func disconnectEvents(){stopAll();liveTimer?.invalidate();liveTimer=nil;liveReader.disconnect();connected=false;connectionLabel="实时监听已断开"}
+    func disconnectEvents(){quotaGeneration=UUID();weeklyQuota=nil;quotaMessage="额度监听已断开";stopAll();liveTimer?.invalidate();liveTimer=nil;liveReader.disconnect();connected=false;connectionLabel="实时监听已断开"}
     func receiveLive() {
         for e in liveReader.poll() {
             guard e.host=="local" else{continue}
@@ -285,21 +329,31 @@ final class RadioStore:NSObject,ObservableObject,AVAudioPlayerDelegate {
         if queue.pending.isEmpty && queue.active==nil {ticker?.invalidate();ticker=nil}
     }
     func playRecorded(_ e:RadioEvent) {
-        guard !muted,let c=channels.first(where:{$0.id==e.channel}) else{queue.finished(e.id);return}
-        generation=UUID();activeID=e.id;now="\(c.callsign) · \(e.status.title)"
+        guard !muted else{queue.finished(e.id);return}
+        let channel=channels.first(where:{$0.id==e.channel})
+        guard e.status.isQuotaAlert || channel != nil else{queue.finished(e.id);return}
+        generation=UUID();activeID=e.id;now=e.status.isQuotaAlert ? e.status.title : "\(channel!.callsign) · \(e.status.title)"
         do {
             guard let voices=voiceDirectory else{throw RecordedAudio.Failure.missingRecording}
-            var pieces=(CallsignCatalog.filenames(for:c.callsignIndex)+CallsignCatalog.numberFiles(c.number)).map{RecordedAudio.Piece(url:voices.appendingPathComponent($0),gap:RecordedAudio.callsignGap,isVoice:true)}
-            if let custom=customClips[e.status.rawValue] {pieces.append(RecordedAudio.Piece(url:custom))}
-            else {
+            let data:Data
+            if e.status.isQuotaAlert {
                 guard let root=Bundle.main.resourceURL else{throw RecordedAudio.Failure.invalidAudio}
-                pieces += SoundMap.clips(e.status,pack:soundPack).map{RecordedAudio.Piece(url:root.appendingPathComponent("Audio/\($0.file)"),start:$0.start,duration:$0.duration,gap:$0.pause)}
+                let cue=try RecordedAudio.samples(.init(url:root.appendingPathComponent("Audio/"+SoundMap.clips(e.status)[0].file)))
+                let reference=try RecordedAudio.samples(.init(url:voices.appendingPathComponent("alfa.wav")))
+                data=RecordedAudio.wav(RecordedAudio.matchLevel(cue,to:reference))
+            }else{
+                let c=channel!
+                var pieces=(CallsignCatalog.filenames(for:c.callsignIndex)+CallsignCatalog.numberFiles(c.number)).map{RecordedAudio.Piece(url:voices.appendingPathComponent($0),gap:RecordedAudio.callsignGap,isVoice:true)}
+                if let custom=customClips[e.status.rawValue] {pieces.append(RecordedAudio.Piece(url:custom))}
+                else {
+                    guard let root=Bundle.main.resourceURL else{throw RecordedAudio.Failure.invalidAudio}
+                    pieces += SoundMap.clips(e.status,pack:soundPack).map{RecordedAudio.Piece(url:root.appendingPathComponent("Audio/\($0.file)"),start:$0.start,duration:$0.duration,gap:$0.pause)}
+                }
+                data=try RecordedAudio.compose(pieces,matchCueLevel:true)
             }
-            // Assemble one PCM buffer before starting: no timer between speech and cue.
-            let data=try RecordedAudio.compose(pieces,matchCueLevel:true)
             let p=try AVAudioPlayer(data:data);p.delegate=self;p.volume=Float(volume);p.numberOfLoops=0;player=p
             guard p.play() else{throw RecordedAudio.Failure.invalidAudio}
-            phase="真人录音 → \(customClips[e.status.rawValue]==nil ? soundPack.title+"声音包" : "个人音源") · 单一连续音轨"
+            phase=e.status.isQuotaAlert ? "周额度提醒 · 单次播放" : "真人录音 → \(customClips[e.status.rawValue]==nil ? soundPack.title+"声音包" : "个人音源") · 单一连续音轨"
             let token=generation
             let watchdog=DispatchWorkItem{[weak self] in guard let me=self,me.generation==token else{return};me.phase="音轨超时，已停止";me.finish(e.id,preserveMessage:true)}
             stageTask=watchdog;DispatchQueue.main.asyncAfter(deadline:.now()+p.duration+1,execute:watchdog)
@@ -372,12 +426,19 @@ final class AppDelegate:NSObject,NSApplicationDelegate {
         settingsWindow?.makeKeyAndOrderFront(nil);NSApp.activate(ignoringOtherApps:true)
     }
     @objc func toggle(){guard let b=item.button else{return};if popover.isShown{popover.performClose(nil)}else{store.refreshCatalog();popover.show(relativeTo:b.bounds,of:b,preferredEdge:.minY);NSApp.activate(ignoringOtherApps:true)}}
-    func applicationWillTerminate(_ notification:Notification){store.disconnectEvents()}
+    func applicationWillTerminate(_ notification:Notification){store.quotaTimer?.invalidate();store.disconnectEvents()}
 }
 
 @main struct CodexRadio {
     static func main() {
         if CommandLine.arguments.contains("--self-test") {runDomainTests();return}
+        if CommandLine.arguments.contains("--quota-check") {
+            guard let executable=CodexQuotaClient.executable() else{fputs("Codex unavailable\n",stderr);exit(1)}
+            let root=URL(fileURLWithPath:ProcessInfo.processInfo.environment["CODEX_HOME"] ?? FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(".codex").path)
+            do{if let quota=try CodexQuotaClient.read(executable:executable,root:root){print("Weekly remaining: \(quota.display); reset: \(quota.resetsAt)")}else{print("Weekly quota unavailable")}}
+            catch{fputs("Quota check failed: \(error.localizedDescription)\n",stderr);exit(1)}
+            return
+        }
         if CommandLine.arguments.contains("--catalog-check") {
             do {let records=try ConversationCatalog.read();print("Recent 7 days: \(records.count) conversations, \(Set(records.map(\.projectID)).count) project groups");for r in records{print("\(r.projectTitle) | \(r.title)")}}catch{fputs("Catalog failed: \(error.localizedDescription)\n",stderr);exit(1)}
             return

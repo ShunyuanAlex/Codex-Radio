@@ -1,7 +1,7 @@
 import Foundation
 
 enum RadioStatus: String, CaseIterable, Codable, Identifiable {
-    case reading, searching, editing, testing, delegating, success, complete, retry, waiting, blocked, cancelled, unknown, compacting
+    case reading, searching, editing, testing, delegating, success, complete, retry, waiting, blocked, cancelled, unknown, compacting, weeklyWarning, weeklyLimit
     var id: String { rawValue }
     var title: String {
         switch self {
@@ -18,10 +18,13 @@ enum RadioStatus: String, CaseIterable, Codable, Identifiable {
         case .cancelled: return "已停止"
         case .unknown: return "工具返回"
         case .compacting: return "压缩上下文"
+        case .weeklyLimit: return "周额度耗尽"
+        case .weeklyWarning: return "周额度预警"
         }
     }
+    var isQuotaAlert:Bool {self == .weeklyWarning || self == .weeklyLimit}
     var priority: Int {
-        switch self { case .blocked,.cancelled: return 3; case .reading,.waiting,.retry,.compacting: return 2; case .complete,.unknown: return 1; default: return 0 }
+        switch self { case .weeklyLimit:return 5;case .weeklyWarning:return 4; case .blocked,.cancelled: return 3; case .reading,.waiting,.retry,.compacting: return 2; case .complete,.unknown: return 1; default: return 0 }
     }
     var symbol: String {
         switch self {
@@ -38,6 +41,7 @@ enum RadioStatus: String, CaseIterable, Codable, Identifiable {
         case .cancelled: return "xmark.circle"
         case .unknown: return "questionmark.circle"
         case .compacting: return "arrow.down.right.and.arrow.up.left"
+        case .weeklyLimit,.weeklyWarning: return "exclamationmark.triangle.fill"
         }
     }
 }
@@ -133,6 +137,7 @@ enum ListeningMode:String,CaseIterable {
         return sounds
     }
     func accepts(_ status:RadioStatus,custom:Set<RadioStatus>)->Bool {
+        if status.isQuotaAlert{return true}
         switch self{case .focus:return Self.focusSounds.contains(status);case .detail:return true;case .custom:return custom.contains(status)}
     }
 }
@@ -196,9 +201,12 @@ enum SoundMap {
         }
     }
     static func clips(_ status: RadioStatus,pack:SoundPack = .airbus) -> [AudioClip] {
-        [AudioClip(file:"Packs/\(pack.rawValue)/\(cueStatus(status).rawValue).wav",duration:3,pause:0)]
+        if status.isQuotaAlert{return [AudioClip(file:status == .weeklyLimit ? "Alerts/quota-exhausted.wav" : "Alerts/pull-up.wav",duration:3,pause:0)]}
+        return [AudioClip(file:"Packs/\(pack.rawValue)/\(cueStatus(status).rawValue).wav",duration:3,pause:0)]
     }
     static func description(_ status: RadioStatus,pack:SoundPack = .airbus) -> String {
+        if status == .weeklyWarning{return "Pull up Pull up · 周剩余5%至1%"}
+        if status == .weeklyLimit{return "独立警报声 · 周剩余额度耗尽"}
         if pack == .j11a {
             switch cueStatus(status) {
             case .reading:return "座舱按键 · 发送指令"
@@ -244,6 +252,13 @@ final class RadioQueue {
         guard !muted, force || accepts(event.status), !seen.contains(event.id) else { return false }
         seen.insert(event.id); seenOrder.append(event.id)
         if seenOrder.count > 1000 { seen.remove(seenOrder.removeFirst()) }
+        // Account-wide exhaustion interrupts even the detailed backlog, using
+        // the same single audio player. Later task events cannot preempt it.
+        if event.status.isQuotaAlert {
+            let preempt=active != nil;active=nil
+            pending.insert(Pending(event:event,firstAt:now,due:now),at:0)
+            return preempt
+        }
         // Detailed mode retains every accepted event in arrival order, including
         // consecutive calls on one conversation. Explicit mute/stop still clears it.
         if mode == "detail"{pending.append(Pending(event:event,firstAt:now,due:now));return false}

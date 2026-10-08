@@ -14,7 +14,7 @@ func runDomainTests() {
     check("取消后旧完成回调不清除新事件"){let q=RadioQueue();q.muted=false;q.offer(e("01",.waiting),at:0);let first=q.next(at:0)!;q.offer(e("02",.blocked),at:0.1);let second=q.next(at:0.1)!;q.finished(first.id);return q.active?.id==second.id}
     check("事件ID去重"){let q=RadioQueue();q.muted=false;let x=e();q.offer(x,at:0);q.offer(x,at:0.1);return q.pending.count==1}
     check("未知业务结果使用独立返回音，不当作成功音"){!SoundMap.clips(.unknown).isEmpty && SoundMap.clips(.unknown) != SoundMap.clips(.success)}
-    check("全部状态有明确中文标签"){RadioStatus.allCases.count==13 && RadioStatus.allCases.allSatisfy{!$0.title.isEmpty}}
+    check("全部状态有明确中文标签"){RadioStatus.allCases.count==15 && RadioStatus.allCases.allSatisfy{!$0.title.isEmpty}}
     check("固定已有 NATO 呼号，不接受自定义文字"){FlightChannel.defaults.map(\.callsign)==["Alpha","Bravo","Charlie","Delta"] && Set(CallsignCatalog.names).count==26}
     check("超过四个或26个项目仍有唯一呼号"){Set((0..<2000).map{CallsignCatalog.words(for:$0).joined(separator:" ")}).count==2000 && CallsignCatalog.words(for:26)==["Alpha","Alpha"]}
     check("呼号、数字与状态音零额外间隔，没有末尾多余停顿"){let x=RecordedAudio.stitch([([0.1,0.2],RecordedAudio.callsignGap),([0.3],0.2)]);return x==[0.1,0.2,0.3]}
@@ -163,7 +163,7 @@ func runDomainTests() {
     }
     check("数字0可显示并使用原录音播报") {CallsignCatalog.numberFiles(0)==["digit0.wav"] && FlightChannel(id:"a",callsignIndex:0,number:0).callsign=="Alpha 0"}
     check("默认专注严格只允许收尾、等待确认、停止和报错") {
-        let q=RadioQueue();let allowed=Set(RadioStatus.allCases.filter{q.accepts($0)})
+        let q=RadioQueue();let allowed=Set(RadioStatus.allCases.filter{!$0.isQuotaAlert && q.accepts($0)})
         return q.mode=="focus" && allowed==[.complete,.waiting,.cancelled,.blocked] && ListeningMode.allCases.map(\.rawValue)==["focus","detail","custom"]
     }
     check("详细模式逐条保留同对话事件、不过期、不抢占丢失") {
@@ -176,8 +176,8 @@ func runDomainTests() {
     }
     check("自定义模式仅播放勾选状态，允许全部取消") {
         let q=RadioQueue();q.mode="custom";q.customSounds=[.reading,.unknown]
-        guard RadioStatus.allCases.filter({q.accepts($0)})==[.reading,.unknown] else{return false}
-        q.customSounds=[];return RadioStatus.allCases.allSatisfy{!q.accepts($0)}
+        guard RadioStatus.allCases.filter({!$0.isQuotaAlert && q.accepts($0)})==[.reading,.unknown] else{return false}
+        q.customSounds=[];return RadioStatus.allCases.filter{!$0.isQuotaAlert}.allSatisfy{!q.accepts($0)}
     }
     check("菜单栏两种显示方式可保存重载，非法值恢复图标加文字") {
         let suite="radio-appearance-test-"+UUID().uuidString
@@ -276,5 +276,6 @@ func runDomainTests() {
     }
     runIntegrationTests(check)
     runStartupTests(check)
+    runQuotaTests(check)
     print("\(passed) checks passed; no audio player constructed and no physical playback.")
 }

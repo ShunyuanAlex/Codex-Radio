@@ -1,0 +1,21 @@
+{
+  "source": "777-VMD/Sounds/GPWS/pull-up.wav",
+  "url": "https://raw.githubusercontent.com/franck-vmd/Boeing-777-Flightgear/42b53cbd1abff5a2cbc868c6576c79c343405b3d/777-VMD/Sounds/GPWS/pull-up.wav",
+  "source_sha256": "b9f2b4fdf64e0b5d210311d185de83ed974101df8358f59f0eef9a8b7e116fc4",
+  "license": "GPL-2.0; see Assets/SoundSources/boeing/LICENSE and AUTHORS",
+  "output": "Assets/Alerts/pull-up.wav",
+  "output_sha256": "ebea8f0f6904db262c117ab611ef217fc1d871ffc460b60227f5938da92eff5a",
+  "phrase_repetitions": 2,
+  "gap_seconds": 0.08,
+  "seconds": 2.6113333333333335,
+  "processing": "24 kHz mono PCM, 4 ms endpoint fades, two full phrases; runtime RMS matched to alfa.wav",
+  "exhaustion_alarm": {
+    "source": "Assets/SoundSources/boeing/config-warning.wav",
+    "source_sha256": "f3717ce4162b27dc619cbbae5d506803d59e2a042181bcbdd61bf62d364ddf80",
+    "source_manifest": "Assets/SoundSources/manifest.json",
+    "output": "Assets/Alerts/quota-exhausted.wav",
+    "output_sha256": "962ac9f42c18be0544a275a4abef9e37dedb29b8bf5aa10130aeba7f4a1bf38d",
+    "seconds": 1.3605416666666668,
+    "processing": "24 kHz mono PCM, 10 ms endpoint fades, one complete alarm; runtime RMS matched to alfa.wav"
+  }
+}

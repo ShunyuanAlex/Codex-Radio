@@ -8,6 +8,7 @@ struct RadioPanel:View {
             header
             currentNotice
             playbackControls
+            quotaReadout
             VStack(alignment:.leading,spacing:9) {
                 HStack {
                     panelLabel("MONITOR / 收听模式")
@@ -45,7 +46,10 @@ struct RadioPanel:View {
                 HStack(spacing:6){Circle().fill(store.connected && store.receivedCount>0 ? FlightDeck.green : FlightDeck.amber).frame(width:5,height:5);Text(store.integrationLabel).font(.system(size:10))}.foregroundColor(FlightDeck.muted)
                 Spacer();Text(store.activeID != nil ? "PLAY" : "STBY").font(.system(size:10,weight:.semibold,design:.monospaced)).foregroundColor(store.activeID != nil ? FlightDeck.green : FlightDeck.muted)
             }
-            if let event=store.displayNotice,let channel=store.noticeChannel {
+            if store.displayNotice?.status.isQuotaAlert == true {
+                Text(store.displayNotice?.status == .weeklyLimit ? "WEEKLY LIMIT" : "PULL UP  PULL UP").font(.system(size:24,weight:.semibold,design:.monospaced)).foregroundColor(FlightDeck.amber)
+                Text(store.displayNotice?.origin == "试听" ? "周额度提醒试听" : "Codex 周剩余 " + (store.weeklyQuota?.display ?? "—")).font(.system(size:11)).foregroundColor(FlightDeck.muted)
+            }else if let event=store.displayNotice,let channel=store.noticeChannel {
                 HStack(alignment:.firstTextBaseline,spacing:10) {
                     Text(channel.callsign).font(.system(size:26,weight:.medium,design:.monospaced)).foregroundColor(FlightDeck.cyan).lineLimit(1).minimumScaleFactor(0.65)
                     Spacer(minLength:0);Text(event.status.title).font(.system(size:12,weight:.medium)).foregroundColor(event.status == .blocked || event.status == .waiting ? FlightDeck.amber : FlightDeck.green)
@@ -70,6 +74,11 @@ struct RadioPanel:View {
             HStack(spacing:10){Image(systemName:"speaker.wave.2").font(.system(size:11)).foregroundColor(FlightDeck.muted);Slider(value:Binding(get:{store.volume},set:{store.setVolume($0)}),in:0...0.5).tint(FlightDeck.cyan).accessibilityLabel("播报音量");Text(String(format:"%02d",Int((store.volume*100).rounded()))+" %").font(.system(size:12,design:.monospaced)).foregroundColor(FlightDeck.cyan).frame(width:42,alignment:.trailing)}
             if !store.voicesReady{Text("呼号录音不可用，请重新安装应用。").font(.system(size:10)).foregroundColor(FlightDeck.amber)}
         }
+    }
+    var quotaReadout:some View {
+        Button{store.openSettings("sounds")}label:{
+            HStack(spacing:8){panelLabel("WEEKLY / 周剩余");Spacer();Text(store.weeklyQuotaAlarm ? store.weeklyQuota?.display ?? "—" : "OFF").font(.system(size:12,weight:.semibold,design:.monospaced)).foregroundColor((store.weeklyQuota?.remainingPercent ?? 100)<=5 ? FlightDeck.amber : FlightDeck.cyan)}
+        }.buttonStyle(.plain).accessibilityLabel("周剩余额度："+(store.weeklyQuota?.display ?? "暂无数据"))
     }
     var recentActivity:some View {
         VStack(alignment:.leading,spacing:9) {
@@ -110,7 +119,7 @@ struct RadioSettings:View {
                 Group {
                     switch store.settingsTab{case "sounds":sounds;case "callsigns":callsigns;case "setup":setup;default:general}
                 }.id(store.settingsTab).frame(maxWidth:.infinity,maxHeight:.infinity,alignment:.topLeading)
-                HStack{Circle().fill(FlightDeck.green).frame(width:4,height:4);Text("设置即时保存在本机").font(.system(size:10));Spacer();Text("CODEX RADIO  0.11.3").font(.system(size:9,design:.monospaced)).tracking(1)}.foregroundColor(FlightDeck.muted)
+                HStack{Circle().fill(FlightDeck.green).frame(width:4,height:4);Text("设置即时保存在本机").font(.system(size:10));Spacer();Text("CODEX RADIO  0.12.0").font(.system(size:9,design:.monospaced)).tracking(1)}.foregroundColor(FlightDeck.muted)
             }.padding(24).frame(maxWidth:.infinity,maxHeight:.infinity)
         }.frame(minWidth:860,minHeight:610).background(FlightDeck.background).foregroundColor(FlightDeck.text).preferredColorScheme(.dark).buttonStyle(FlightButtonStyle())
     }
@@ -159,6 +168,22 @@ struct RadioSettings:View {
                         }
                     }
                     Text(store.soundPack.sourceNote).font(.system(size:10)).foregroundColor(FlightDeck.muted)
+                }
+                FlightSection("周额度报警",code:"PULL UP") {
+                    HStack(spacing:12) {
+                        VStack(alignment:.leading,spacing:6){Text("周剩余 " + (store.weeklyQuota?.display ?? "—")).font(.system(size:18,weight:.medium,design:.monospaced)).foregroundColor((store.weeklyQuota?.remainingPercent ?? 100)<=5 ? FlightDeck.amber : FlightDeck.cyan);Text(store.quotaMessage).font(.system(size:10)).foregroundColor(FlightDeck.muted)}
+                        Spacer()
+                        FlightSwitch(title:"周额度报警",isOn:Binding(get:{store.weeklyQuotaAlarm},set:{store.setWeeklyQuotaAlarm($0)}))
+                    }
+                    Text("5% · 4% · 3% · 2% · 1%：各报一次 Pull up Pull up；0%：独立警报声一次。跳降时只提醒当前档，不连响补报。").font(.system(size:11)).foregroundColor(FlightDeck.muted)
+                    HStack(spacing:10) {
+                        Button(store.quotaBusy ? "读取中" : "刷新"){store.refreshQuota()}.disabled(store.quotaBusy || !store.weeklyQuotaAlarm || !store.connected)
+                        Button("预警试听"){store.enqueueQuotaAlarm(.warning(5),audition:true)}.disabled(store.muted || store.volume<=0 || !store.voicesReady).accessibilityLabel("试听 Pull up Pull up")
+                        Button("耗尽试听"){store.enqueueQuotaAlarm(.exhausted,audition:true)}.disabled(store.muted || store.volume<=0 || !store.voicesReady).accessibilityLabel("试听额度耗尽警报")
+                        Spacer()
+                    }
+                    Text("三种模式均生效，遵循总音量与静音；每档记录跨重启保留，静音时不补播。").font(.system(size:10)).foregroundColor(FlightDeck.muted)
+                    if !store.metadataAllowed{Text("完成接入后开始检查周额度。").font(.system(size:10)).foregroundColor(FlightDeck.amber)}
                 }
                 FlightSection("收听模式",code:"MONITOR") {
                     FlightModeSelector(store:store)
@@ -229,7 +254,7 @@ struct RadioSettings:View {
                     Text(store.codexHome.path).font(.system(size:11,design:.monospaced)).foregroundColor(FlightDeck.cyan).textSelection(.enabled).lineLimit(3)
                     HStack{Button("选择目录…"){store.chooseCodexHome()}.disabled(store.integrationBusy);Button("重新检查"){store.checkIntegration()}.disabled(store.integrationBusy);Spacer()}
                     if let issue=store.integration.issue{Text(issue).font(.system(size:11)).foregroundColor(FlightDeck.amber)}
-                    Text("允许后读取本地项目与对话标题，向 hooks.json 追加缺少的监听；保留并备份原有 Hooks。").font(.system(size:11)).foregroundColor(FlightDeck.muted)
+                    Text("允许后读取本地项目与对话标题，向 hooks.json 追加缺少的监听；保留并备份原有 Hooks。启用周额度报警时，由本机 Codex 使用已有登录联网读取额度。").font(.system(size:11)).foregroundColor(FlightDeck.muted)
                     Button(store.integrationBusy ? "正在配置…" : store.integration.complete ? "允许读取并检查接入" : "允许读取并安装接入"){store.installIntegration()}.buttonStyle(FlightButtonStyle(selected:true)).disabled(store.integrationBusy || !store.integration.folderExists || store.integration.issue != nil)
                     if !store.integrationMessage.isEmpty{Text(store.integrationMessage).font(.system(size:11)).foregroundColor(FlightDeck.cyan).textSelection(.enabled)}
                 }
